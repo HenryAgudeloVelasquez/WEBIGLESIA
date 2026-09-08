@@ -1,0 +1,173 @@
+<div class="events-page page-container">
+  <!-- Header -->
+  <header class="section-header">
+    <span class="section-tag">Agenda & Encuentros</span>
+    <h1 class="section-title">Eventos & Convocatorias</h1>
+    <p class="section-subtitle">
+      Descubre los próximos cultos, congresos familiares, vigilias de clamor y campamentos. 
+      ¡Separa la fecha y acompáñanos junto a tu familia!
+    </p>
+  </header>
+
+  <!-- Filter Bar -->
+  <div class="category-filters-container">
+    <div class="filter-pills">
+      @for (cat of categories; track cat.value) {
+        <button
+          type="button"
+          class="filter-pill"
+          [class.active]="selectedCategory() === cat.value"
+          (click)="setCategory(cat.value)"
+        >
+          <i [class]="cat.icon"></i>
+          <span>{{ cat.label }}</span>
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Events Grid -->
+  <div class="events-main-grid">
+    @for (event of filteredEvents(); track event.id) {
+      <article class="event-card glass-panel" [class.featured-border]="event.featured">
+        <div class="card-header-bar">
+          <span class="event-badge">{{ event.badge }}</span>
+          <span class="event-date-tag"><i class="pi pi-calendar"></i> {{ event.date }}</span>
+        </div>
+
+        <h2 class="card-title">{{ event.title }}</h2>
+        <p class="card-subtitle">{{ event.subtitle }}</p>
+
+        <div class="card-meta">
+          <div class="meta-item">
+            <i class="pi pi-clock"></i>
+            <span>{{ event.time }}</span>
+          </div>
+          <div class="meta-item">
+            <i class="pi pi-map-marker"></i>
+            <span>{{ event.location }}</span>
+          </div>
+        </div>
+
+        <p class="card-desc">{{ event.description }}</p>
+
+        <div class="card-actions">
+          <button type="button" class="btn-details" (click)="openEventDetails(event)">
+            <span>Ver Detalles</span>
+            <i class="pi pi-external-link"></i>
+          </button>
+
+          <a
+            [href]="getGoogleCalendarUrl(event)"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-calendar"
+            title="Añadir a Google Calendar"
+          >
+            <i class="pi pi-calendar-plus"></i>
+            <span>Agendar</span>
+          </a>
+
+          <a
+            [href]="getWhatsAppRegistrationUrl(event)"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-register-wa"
+          >
+            <i class="pi pi-whatsapp"></i>
+            <span>Inscribirme</span>
+          </a>
+        </div>
+      </article>
+    } @empty {
+      <div class="empty-state glass-panel">
+        <i class="pi pi-calendar-times empty-icon"></i>
+        <h3>No hay eventos en esta categoría</h3>
+        <p>Pronto anunciaremos nuevas fechas para este ministerio.</p>
+        <button type="button" class="btn-reset-filters" (click)="setCategory('todos')">
+          Ver todos los eventos
+        </button>
+      </div>
+    }
+  </div>
+
+  <!-- Event Details Modal Dialog -->
+  @if (activeEventModal()) {
+    <div class="custom-modal-backdrop" (click)="closeEventDetails()">
+      <div class="custom-modal-content glass-panel" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <div>
+            <span class="modal-badge">{{ activeEventModal()?.badge }}</span>
+            <h2 class="modal-title">{{ activeEventModal()?.title }}</h2>
+            <p class="modal-sub">{{ activeEventModal()?.subtitle }}</p>
+          </div>
+          <button type="button" class="modal-close" (click)="closeEventDetails()">
+            <i class="pi pi-times"></i>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div class="modal-info-grid">
+            <div class="info-card">
+              <i class="pi pi-calendar"></i>
+              <div>
+                <strong>Fecha</strong>
+                <span>{{ activeEventModal()?.date }}</span>
+              </div>
+            </div>
+            <div class="info-card">
+              <i class="pi pi-clock"></i>
+              <div>
+                <strong>Horario</strong>
+                <span>{{ activeEventModal()?.time }}</span>
+              </div>
+            </div>
+            <div class="info-card">
+              <i class="pi pi-map-marker"></i>
+              <div>
+                <strong>Lugar</strong>
+                <span>{{ activeEventModal()?.location }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-desc-box">
+            <h4>Descripción del Evento</h4>
+            <p>{{ activeEventModal()?.description }}</p>
+          </div>
+
+          <div class="modal-tips">
+            <h4>Recomendaciones</h4>
+            <ul>
+              <li>Llegar 15 minutos antes para acomodación.</li>
+              <li>Entrada libre y gratuita (Cupos limitados por aforo).</li>
+              <li>Contamos con cuidado especial y escuela para niños.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <a
+            [href]="activeEventModal() ? getGoogleCalendarUrl(activeEventModal()!) : '#'"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="modal-btn-cal"
+          >
+            <i class="pi pi-calendar-plus"></i>
+            <span>Añadir a mi Calendario</span>
+          </a>
+
+          <a
+            [href]="activeEventModal() ? getWhatsAppRegistrationUrl(activeEventModal()!) : '#'"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="modal-btn-wa"
+          >
+            <i class="pi pi-whatsapp"></i>
+            <span>Confirmar Asistencia por WhatsApp</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  }
+</div>

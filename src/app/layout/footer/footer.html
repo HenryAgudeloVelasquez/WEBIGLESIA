@@ -1,0 +1,116 @@
+<footer class="church-footer" role="contentinfo">
+  <!-- Top Verse Ribbon -->
+  <div class="verse-ribbon">
+    <div class="ribbon-inner">
+      <i class="pi pi-bookmark-fill ribbon-icon"></i>
+      <span class="ribbon-text">"{{ motto().verse }}"</span>
+      <span class="ribbon-ref"> — {{ motto().reference }}</span>
+    </div>
+  </div>
+
+  <div class="footer-main">
+    <div class="footer-grid">
+      <!-- Column 1: Ministry Info -->
+      <div class="footer-col brand-col">
+        <div class="footer-brand">
+          <div class="logo-box">
+            <img src="assets/images/logo.png" alt="En su Gracia Logo" class="footer-logo-img" />
+          </div>
+          <div>
+            <h3 class="footer-title">Ministerio de Restauración Familiar</h3>
+            <p class="footer-gold gold-gradient-text">En su Gracia</p>
+          </div>
+        </div>
+        <p class="brand-desc">
+          Somos una comunidad cristiana fundamentada en la verdad inmutable del Evangelio, la gracia redentora de Jesucristo y el poder del Espíritu Santo para reconstruir familias sanas y llenas de propósito.
+        </p>
+        <div class="social-links">
+          <a [href]="env.social.facebook" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="social-btn">
+            <i class="pi pi-facebook"></i>
+          </a>
+          <a [href]="env.social.instagram" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="social-btn">
+            <i class="pi pi-instagram"></i>
+          </a>
+          <a [href]="env.social.youtube" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="social-btn">
+            <i class="pi pi-youtube"></i>
+          </a>
+          <a [href]="'https://wa.me/' + env.whatsappNumber" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="social-btn wa-accent">
+            <i class="pi pi-whatsapp"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Column 2: Horarios de Reunión -->
+      <div class="footer-col">
+        <h4 class="col-title">Horarios de Bendición</h4>
+        <ul class="schedule-list">
+          <li class="schedule-item">
+            <div class="day-badge">Domingos</div>
+            <div class="schedule-details">
+              <strong>Culto de Celebración Familiar</strong>
+              <span>10:00 AM - 12:30 PM (Con Escuela Kids)</span>
+            </div>
+          </li>
+          <li class="schedule-item">
+            <div class="day-badge">Miércoles</div>
+            <div class="schedule-details">
+              <strong>Noche de Gracia & Discipulado</strong>
+              <span>07:00 PM - 08:30 PM</span>
+            </div>
+          </li>
+          <li class="schedule-item">
+            <div class="day-badge">Sábados</div>
+            <div class="schedule-details">
+              <strong>Jóvenes & Ensayos de Alabanza</strong>
+              <span>04:00 PM - 06:30 PM</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Column 3: Enlaces Rápidos -->
+      <div class="footer-col">
+        <h4 class="col-title">Navegación</h4>
+        <ul class="footer-links">
+          <li><a routerLink="/home"><i class="pi pi-angle-right"></i> Inicio</a></li>
+          <li><a routerLink="/eventos"><i class="pi pi-angle-right"></i> Agenda y Eventos</a></li>
+          <li><a routerLink="/evangelio"><i class="pi pi-angle-right"></i> Prédicas y Devocionales</a></li>
+          <li><a routerLink="/coro"><i class="pi pi-angle-right"></i> Ministerio de Alabanza</a></li>
+          <li><a routerLink="/servicios"><i class="pi pi-angle-right"></i> Consejería y Grupos</a></li>
+          <li><a routerLink="/kids" class="kids-link"><i class="pi pi-star-fill"></i> Generación Gracia Kids</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 4: Ubicación y Contacto -->
+      <div class="footer-col">
+        <h4 class="col-title">Contacto Pastoral</h4>
+        <div class="contact-info">
+          <div class="info-row">
+            <i class="pi pi-map-marker info-icon"></i>
+            <span>{{ env.address }}</span>
+          </div>
+          <div class="info-row">
+            <i class="pi pi-phone info-icon"></i>
+            <span>{{ env.phone }}</span>
+          </div>
+          <div class="info-row">
+            <i class="pi pi-envelope info-icon"></i>
+            <span>{{ env.email }}</span>
+          </div>
+          <div class="info-row">
+            <i class="pi pi-whatsapp info-icon text-green"></i>
+            <span>Línea de Oración Inmediata: Activa 24/7</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Legal -->
+  <div class="footer-bottom">
+    <div class="bottom-inner">
+      <p>&copy; {{ currentYear }} {{ env.appName }}. Todos los derechos reservados.</p>
+      <p class="blessing-phrase">"La gracia del Señor Jesucristo sea con vuestro espíritu."</p>
+    </div>
+  </div>
+</footer>

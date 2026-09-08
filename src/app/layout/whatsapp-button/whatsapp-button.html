@@ -1,0 +1,73 @@
+<div class="wa-floating-container">
+  <!-- Popup Card -->
+  @if (isCardOpen()) {
+    <div class="wa-popup-card glass-panel animate-fade-up" role="dialog" aria-modal="true">
+      <!-- Card Header -->
+      <div class="popup-header">
+        <div class="header-info">
+          <div class="avatar-ring">
+            <i class="pi pi-whatsapp"></i>
+          </div>
+          <div>
+            <h4 class="popup-title">Línea de Gracia & Oración</h4>
+            <p class="popup-status">
+              <span class="status-dot"></span>
+              En línea para atenderte con amor
+            </p>
+          </div>
+        </div>
+        <button type="button" class="close-btn" (click)="closeCard()" aria-label="Cerrar ventana">
+          <i class="pi pi-times"></i>
+        </button>
+      </div>
+
+      <!-- Card Body -->
+      <div class="popup-body">
+        <p class="welcome-text">
+          ¡La paz de Cristo sea contigo! ¿En qué podemos acompañarte y orar por ti hoy?
+        </p>
+
+        <div class="options-list">
+          @for (option of quickOptions; track option.title) {
+            <a
+              [href]="getWhatsAppLink(option.message)"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="option-pill"
+              (click)="closeCard()"
+            >
+              <i [class]="option.icon" class="option-icon"></i>
+              <span>{{ option.title }}</span>
+            </a>
+          }
+        </div>
+      </div>
+
+      <!-- Card Footer -->
+      <div class="popup-footer">
+        <a
+          [href]="getWhatsAppLink('¡Hola! Me comunico desde la web de la Iglesia En su Gracia.')"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="custom-chat-btn"
+          (click)="closeCard()"
+        >
+          <span>Abrir conversación directa</span>
+          <i class="pi pi-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  }
+
+  <!-- Floating Action Button -->
+  <button
+    type="button"
+    class="wa-float-trigger"
+    (click)="toggleCard()"
+    aria-label="Abrir chat de WhatsApp"
+    [class.active]="isCardOpen()"
+  >
+    <i [class]="isCardOpen() ? 'pi pi-times' : 'pi pi-whatsapp'"></i>
+    <span class="pulse-ring"></span>
+  </button>
+</div>

@@ -1,0 +1,269 @@
+// PrimeIcons
+@import 'primeicons/primeicons.css';
+
+// ==============================================================================
+// Design Tokens - "Ministerio de Restauración Familiar - En su Gracia"
+// Identidad: Royal Navy (#0A192F), Imperial Gold (#D4AF37), Warm Burgundy (#8B1E2D)
+// ==============================================================================
+:root {
+  // Paleta Institucional
+  --color-primary: #D4AF37;        // Oro imperial cálido (Altar & Gloria)
+  --color-primary-dark: #AA7C11;   // Oro profundo
+  --color-primary-light: #F5D061;  // Oro resplandeciente
+  
+  --color-navy: #0F254B;           // Royal Navy
+  --color-navy-dark: #0A192F;      // Deep Midnight Navy
+  --color-navy-light: #1E3A6D;     // Soft Navy
+  
+  --color-burgundy: #8B1E2D;       // Borgoña Restauración Familiar
+  --color-burgundy-dark: #63121E;  // Borgoña oscuro
+  --color-burgundy-light: #B83346; // Borgoña vibrante
+
+  // Superficies (Dark Mode por defecto para estética de alto impacto)
+  --color-surface-0: #060D1A;      // Fondo raíz (Navy cósmico)
+  --color-surface-1: #0D1C34;      // Tarjetas / paneles
+  --color-surface-2: #162B4E;      // Inputs / hover
+  --color-surface-3: #223D6B;      // Bordes sutiles
+
+  // Tipografía
+  --color-text-primary: #F8FAFC;
+  --color-text-secondary: #CBD5E1;
+  --color-text-muted: #94A3B8;
+  --color-text-gold: #F5D061;
+
+  // Semánticos
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-danger: #EF4444;
+  --color-info: #38BDF8;
+
+  // Espaciado
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+  --spacing-3xl: 4.5rem;
+
+  // Fuentes
+  --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-family-display: 'Outfit', 'Playfair Display', serif;
+
+  // Bordes
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 2rem;
+  --radius-full: 9999px;
+
+  // Sombras
+  --shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 6px 16px -2px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 16px 32px -4px rgba(0, 0, 0, 0.45);
+  --shadow-gold: 0 0 25px rgba(212, 175, 55, 0.25);
+  --shadow-burgundy: 0 0 25px rgba(139, 30, 45, 0.3);
+
+  // Transiciones
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+// ==============================================================================
+// Light Mode (Inversión elegante con tonos marfil y azul imperial)
+// ==============================================================================
+html:not(.app-dark) {
+  --color-surface-0: #F8FAFC;
+  --color-surface-1: #FFFFFF;
+  --color-surface-2: #F1F5F9;
+  --color-surface-3: #E2E8F0;
+
+  --color-text-primary: #0F172A;
+  --color-text-secondary: #334155;
+  --color-text-muted: #64748B;
+  --color-text-gold: #9E740B;
+
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 14px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 12px 28px -4px rgba(0, 0, 0, 0.12);
+}
+
+// ==============================================================================
+// Reset & Base
+// ==============================================================================
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+  font-family: var(--font-family-base);
+  background-color: var(--color-surface-0);
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+
+  // Dynamic mesh background with gold & navy radiance
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.07) 0%, transparent 45%),
+    radial-gradient(circle at 90% 70%, rgba(139, 30, 45, 0.06) 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(15, 37, 75, 0.15) 0%, transparent 70%);
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary);
+  line-height: 1.25;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+// ==============================================================================
+// Clases de Utilidad y Efectos Visuales
+// ==============================================================================
+
+// Glassmorphism Premium
+.glass-panel {
+  background: rgba(13, 28, 52, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+
+  &:hover {
+    border-color: rgba(212, 175, 55, 0.35);
+  }
+}
+
+html:not(.app-dark) .glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  box-shadow: 0 10px 25px rgba(10, 25, 47, 0.06);
+}
+
+// Texto con Gradiente Dorado
+.gold-gradient-text {
+  background: linear-gradient(135deg, #F9E79F 0%, #D4AF37 50%, #AA7C11 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// Texto con Gradiente Celestial
+.celestial-gradient-text {
+  background: linear-gradient(135deg, #FFFFFF 20%, #F5D061 60%, #E67E22 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// Badge de Gracia
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: rgba(212, 175, 55, 0.12);
+  color: var(--color-primary-light);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+// Contenedores Estándar
+.page-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 6rem;
+  min-height: calc(100vh - 160px);
+
+  @media (max-width: 768px) {
+    padding: 2rem 1rem 4rem;
+  }
+}
+
+.section-header {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto 3.5rem;
+
+  .section-tag {
+    display: inline-block;
+    color: var(--color-primary);
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin-bottom: 1rem;
+  }
+
+  .section-subtitle {
+    font-size: 1.125rem;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+  }
+}
+
+// Scrollbar personalizada
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-surface-0);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-surface-3);
+  border-radius: var(--radius-full);
+
+  &:hover {
+    background: var(--color-primary);
+  }
+}
+
+// Ocultar banner de PrimeNG
+#p-license-host {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}

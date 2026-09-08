@@ -1,0 +1,16 @@
+export const environment = {
+  production: false,
+  appName: 'Ministerio de Restauración Familiar - En su Gracia',
+  churchName: 'En su Gracia',
+  whatsappNumber: '573001234567',
+  whatsappDefaultMessage: '¡Hola! Me gustaría conocer más sobre la iglesia En su Gracia y solicitar oración.',
+  address: 'Calle Principal de la Gracia #12-34, Comunidad Cristiana',
+  email: 'contacto@ensugracia.org',
+  phone: '+57 (601) 555-4321',
+  social: {
+    facebook: 'https://facebook.com/ensugracia',
+    instagram: 'https://instagram.com/ensugracia',
+    youtube: 'https://youtube.com/@ensugracia',
+    spotify: 'https://spotify.com'
+  }
+};

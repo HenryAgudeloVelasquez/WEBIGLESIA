@@ -1,0 +1,227 @@
+<div class="choir-page page-container">
+  <!-- Header -->
+  <header class="section-header">
+    <span class="section-tag">Adoración en Espíritu & Verdad</span>
+    <h1 class="section-title">Ministerio de Alabanza & Coro</h1>
+    <p class="section-subtitle">
+      <strong>En su Gracia Worship:</strong> Levantar a Dios cánticos que desaten sanidad, edifiquen a la congregación
+      y lleven a cada familia a una comunión íntima con el Padre celestial.
+    </p>
+  </header>
+
+  <!-- Choir Vision & Values Banner -->
+  <div class="choir-values-grid">
+    <div class="value-box glass-panel">
+      <div class="value-icon"><i class="pi pi-heart"></i></div>
+      <h3>Corazón Consagrado</h3>
+      <p>Nuestra adoración no es un concierto, sino un sacrificio vivo de gratitud y devoción sincera a Dios.</p>
+    </div>
+    <div class="value-box glass-panel">
+      <div class="value-icon"><i class="pi pi-sparkles"></i></div>
+      <h3>Excelencia Musical</h3>
+      <p>Nos preparamos con rigor técnico vocal e instrumental para entregarle al Señor lo mejor de nuestros dones.</p>
+    </div>
+    <div class="value-box glass-panel">
+      <div class="value-icon"><i class="pi pi-users"></i></div>
+      <h3>Unidad Familiar</h3>
+      <p>Músicos y cantantes comprometidos con el testimonio en su hogar, siendo ejemplo de vida cristiana.</p>
+    </div>
+  </div>
+
+  <!-- Interactive Songbook Section -->
+  <section class="songbook-section" aria-label="Cancionero y Repertorio">
+    <div class="section-subheading">
+      <h2>Cancionero & Repertorio de Alabanzas</h2>
+      <p>Explora nuestras alabanzas, aprende las letras y consulta los acordes para tus tiempos devocionales.</p>
+    </div>
+
+    <!-- Category Filter Pills -->
+    <div class="song-filters">
+      <button
+        type="button"
+        class="song-filter-pill"
+        [class.active]="selectedCategory() === 'todas'"
+        (click)="setCategory('todas')"
+      >
+        Todas las Canciones
+      </button>
+      <button
+        type="button"
+        class="song-filter-pill"
+        [class.active]="selectedCategory() === 'adoracion'"
+        (click)="setCategory('adoracion')"
+      >
+        Adoración Íntima
+      </button>
+      <button
+        type="button"
+        class="song-filter-pill"
+        [class.active]="selectedCategory() === 'alabanza'"
+        (click)="setCategory('alabanza')"
+      >
+        Júbilo & Alabanza
+      </button>
+      <button
+        type="button"
+        class="song-filter-pill"
+        [class.active]="selectedCategory() === 'especial'"
+        (click)="setCategory('especial')"
+      >
+        Especiales para Familias
+      </button>
+    </div>
+
+    <!-- Songbook Layout: Songs List + Viewer -->
+    <div class="songbook-layout">
+      <!-- Songs List -->
+      <div class="songs-list glass-panel">
+        <h3 class="list-title">Canciones Disponibles</h3>
+        <div class="items-column">
+          @for (song of filteredSongs(); track song.id) {
+            <button
+              type="button"
+              class="song-item-btn"
+              [class.active]="activeSong()?.id === song.id"
+              (click)="selectSong(song)"
+            >
+              <div class="song-item-info">
+                <strong class="s-title">{{ song.title }}</strong>
+                <span class="s-author">{{ song.author }}</span>
+              </div>
+              <span class="s-badge">{{ song.key }}</span>
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Active Song Viewer -->
+      @if (activeSong()) {
+        <div class="song-viewer glass-panel">
+          <div class="viewer-header">
+            <div>
+              <span class="v-category">Categoría: {{ activeSong()?.category | uppercase }}</span>
+              <h3 class="v-title">{{ activeSong()?.title }}</h3>
+              <p class="v-author">Compositor: {{ activeSong()?.author }}</p>
+            </div>
+
+            <div class="viewer-meta-badges">
+              <span class="v-pill"><i class="pi pi-key"></i> Tono: {{ activeSong()?.key }}</span>
+              <span class="v-pill"><i class="pi pi-clock"></i> {{ activeSong()?.tempo }}</span>
+            </div>
+          </div>
+
+          <!-- Chords Toggle Switch -->
+          <div class="chords-switch-bar">
+            <span>Visualización:</span>
+            <button
+              type="button"
+              class="btn-toggle-chords"
+              [class.active]="showChords()"
+              (click)="toggleChords()"
+            >
+              <i [class]="showChords() ? 'pi pi-check-circle' : 'pi pi-circle'"></i>
+              <span>{{ showChords() ? 'Con Acordes para Músicos' : 'Solo Letras' }}</span>
+            </button>
+          </div>
+
+          <!-- Lyrics / Chords Display Box -->
+          <div class="lyrics-chords-box">
+            @if (showChords()) {
+              <pre class="chords-pre">{{ activeSong()?.chords }}
+
+{{ activeSong()?.lyrics }}</pre>
+            } @else {
+              <pre class="lyrics-pre">{{ activeSong()?.lyrics }}</pre>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Rehearsal & Auditions Grid -->
+  <section class="rehearsals-auditions-section">
+    <!-- Rehearsal Schedule Card -->
+    <div class="schedule-card glass-panel">
+      <span class="badge-pill">Compromiso & Disciplina</span>
+      <h3>Horarios de Ensayos</h3>
+      <p class="sch-desc">
+        La adoración requiere consagración del tiempo. Nuestro equipo ensaya semanalmente:
+      </p>
+
+      <ul class="rehearsal-list">
+        <li>
+          <i class="pi pi-calendar-check"></i>
+          <div>
+            <strong>Sábados 04:00 PM a 06:30 PM</strong>
+            <span>Ensayo general con instrumentos, voces y ecualización de sonido.</span>
+          </div>
+        </li>
+        <li>
+          <i class="pi pi-calendar-check"></i>
+          <div>
+            <strong>Domingos 08:30 AM a 09:30 AM</strong>
+            <span>Calentamiento vocal, prueba de monitores y devocional de oración previo al culto.</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Auditions Sign-up Card -->
+    <div class="auditions-card glass-panel">
+      <span class="badge-pill">Convocatoria Abierta</span>
+      <h3>¿Tocas un instrumento o cantas?</h3>
+      <p class="aud-desc">
+        Si sientes el llamado a servir en el coro o la banda musical, postúlate para nuestras audiciones periódicas.
+      </p>
+
+      <form class="audition-form" (submit)="$event.preventDefault(); sendAuditionRequest()">
+        <div class="form-group">
+          <label for="name">Nombre y Apellidos *</label>
+          <input
+            id="name"
+            type="text"
+            placeholder="Ej. Andrés Pérez"
+            [value]="applicantName()"
+            (input)="applicantName.set($any($event.target).value)"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="instrument">Área de Servicio *</label>
+          <select
+            id="instrument"
+            [value]="applicantInstrument()"
+            (change)="applicantInstrument.set($any($event.target).value)"
+          >
+            <option value="Voz / Soprano">Voz / Canto - Soprano</option>
+            <option value="Voz / Contralto">Voz / Canto - Contralto</option>
+            <option value="Voz / Tenor">Voz / Canto - Tenor</option>
+            <option value="Piano / Teclados">Piano / Teclados</option>
+            <option value="Guitarra Eléctrica / Acústica">Guitarra Eléctrica / Acústica</option>
+            <option value="Bajo Eléctrico">Bajo Eléctrico</option>
+            <option value="Batería / Percusión">Batería / Percusión</option>
+            <option value="Equipo de Sonido & Transmisión">Sonido & Transmisión Audiovisual</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="exp">Experiencia o Tiempo como creyente</label>
+          <input
+            id="exp"
+            type="text"
+            placeholder="Ej. Canto en casa, 2 años de congregación..."
+            [value]="applicantExperience()"
+            (input)="applicantExperience.set($any($event.target).value)"
+          />
+        </div>
+
+        <button type="submit" class="btn-submit-audition">
+          <i class="pi pi-send"></i>
+          <span>Enviar Solicitud de Audición</span>
+        </button>
+      </form>
+    </div>
+  </section>
+</div>

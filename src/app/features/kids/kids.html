@@ -1,0 +1,278 @@
+<div class="kids-page page-container">
+  <!-- Hero Banner Kids -->
+  <header class="kids-hero-banner glass-panel">
+    <div class="kids-hero-decorations">
+      <span class="star-float s1">⭐</span>
+      <span class="star-float s2">✨</span>
+      <span class="star-float s3">🌟</span>
+      <span class="star-float s4">🎨</span>
+    </div>
+
+    <div class="kids-hero-content">
+      <div class="kids-pill-badge">
+        <i class="pi pi-star-fill"></i>
+        <span>¡Bienvenidos Pequeños Campeones!</span>
+      </div>
+
+      <h1 class="kids-main-title">
+        Generación <span class="rainbow-gradient-text">Gracia Kids</span>
+      </h1>
+
+      <p class="kids-sub">
+        ¡Un lugar súper divertido para aprender la Biblia, conocer las historias de Jesús,
+        jugar trivias interactivas y cantar alabanzas llenas de alegría!
+      </p>
+
+      <div class="kids-schedule-pill">
+        <i class="pi pi-clock"></i>
+        <span>Escuela Dominical: Todos los Domingos a las 10:00 AM</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- INTERACTIVE SECTION 1: Trivia Bíblica -->
+  <section class="kids-section trivia-section" aria-label="Juego de Trivia Bíblica">
+    <div class="kids-section-header">
+      <span class="badge-pill">Juego Interactivo</span>
+      <h2>Desafío de Sabiduría Bíblica</h2>
+      <p>¿Cuánto conoces de los héroes de la fe? ¡Pon a prueba tus conocimientos bíblicos!</p>
+    </div>
+
+    <div class="trivia-box glass-panel">
+      @if (!isTriviaFinished()) {
+        <!-- Score Bar -->
+        <div class="trivia-status-bar">
+          <div class="question-tracker">
+            Pregunta <strong>{{ currentQuestionIndex() + 1 }}</strong> de {{ triviaList().length }}
+          </div>
+          <div class="score-badge">
+            <i class="pi pi-star-fill"></i>
+            <span>Puntaje: {{ score() }} pts</span>
+          </div>
+        </div>
+
+        <!-- Question Card -->
+        <div class="trivia-question-card">
+          <h3 class="trivia-question-text">{{ currentQuestion().question }}</h3>
+
+          <!-- Options Grid -->
+          <div class="options-grid">
+            @for (option of currentQuestion().options; track $index) {
+              <button
+                type="button"
+                class="option-btn"
+                [class.selected]="selectedOption() === $index"
+                [class.correct]="isAnswerChecked() && $index === currentQuestion().correctAnswer"
+                [class.wrong]="isAnswerChecked() && selectedOption() === $index && $index !== currentQuestion().correctAnswer"
+                [disabled]="isAnswerChecked()"
+                (click)="selectTriviaOption($index)"
+              >
+                <span class="option-letter">{{ ['A', 'B', 'C', 'D'][$index] }}</span>
+                <span class="option-text">{{ option }}</span>
+                @if (isAnswerChecked() && $index === currentQuestion().correctAnswer) {
+                  <i class="pi pi-check-circle result-icon correct-icon"></i>
+                }
+                @if (isAnswerChecked() && selectedOption() === $index && $index !== currentQuestion().correctAnswer) {
+                  <i class="pi pi-times-circle result-icon wrong-icon"></i>
+                }
+              </button>
+            }
+          </div>
+
+          <!-- Explanation Box (revealed when checked) -->
+          @if (isAnswerChecked()) {
+            <div class="explanation-box animate-fade-up">
+              <div class="exp-header">
+                <i class="pi pi-info-circle"></i>
+                <strong>¿Sabías que?</strong>
+              </div>
+              <p>{{ currentQuestion().explanation }}</p>
+              <span class="exp-verse">📖 Cita Bíblica: {{ currentQuestion().bibleVerse }}</span>
+            </div>
+          }
+
+          <!-- Actions -->
+          <div class="trivia-actions">
+            @if (!isAnswerChecked()) {
+              <button
+                type="button"
+                class="btn-check-answer"
+                [disabled]="selectedOption() === null"
+                (click)="checkAnswer()"
+              >
+                <span>Comprobar Respuesta</span>
+                <i class="pi pi-check"></i>
+              </button>
+            } @else {
+              <button type="button" class="btn-next-question" (click)="nextQuestion()">
+                <span>{{ currentQuestionIndex() === triviaList().length - 1 ? 'Ver Resultado Final' : 'Siguiente Pregunta' }}</span>
+                <i class="pi pi-arrow-right"></i>
+              </button>
+            }
+          </div>
+        </div>
+      } @else {
+        <!-- Victory Screen -->
+        <div class="victory-screen text-center animate-fade-up">
+          <div class="trophy-bounce">🏆</div>
+          <h3 class="victory-title">¡Felicitaciones, Campeón de la Fe!</h3>
+          <p class="victory-desc">Has completado la Trivia Bíblica de Gracia Kids con éxito.</p>
+          <div class="final-score-display">
+            Puntaje Final: <strong>{{ score() }} Puntos</strong>
+          </div>
+          <div class="stars-row">⭐⭐⭐⭐⭐</div>
+          <button type="button" class="btn-play-again" (click)="restartTrivia()">
+            <i class="pi pi-refresh"></i>
+            <span>Jugar de Nuevo</span>
+          </button>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- INTERACTIVE SECTION 2: Memorizador de Versículos -->
+  <section class="kids-section memory-section" aria-label="Memorizador de Versículos">
+    <div class="kids-section-header">
+      <span class="badge-pill">¡Guarda la Palabra en tu Corazón!</span>
+      <h2>Memorizador de Versículos Bíblicos</h2>
+      <p>Haz clic en cada tarjeta para descubrir el versículo escondido y practicarlo.</p>
+    </div>
+
+    <div class="verses-cards-grid">
+      @for (v of verses(); track v.id) {
+        <div
+          class="verse-memory-card glass-panel"
+          (click)="toggleVerse(v.id)"
+          [class.revealed]="revealedVerses()[v.id]"
+        >
+          <div class="verse-card-top">
+            <span class="level-tag">{{ v.level }}</span>
+            <span class="tap-hint">
+              <i class="pi pi-hand"></i> {{ revealedVerses()[v.id] ? 'Toca para ocultar' : 'Toca para revelar' }}
+            </span>
+          </div>
+
+          <div class="verse-memory-body">
+            @if (revealedVerses()[v.id]) {
+              <p class="revealed-verse-text">"{{ v.verse }}"</p>
+              <strong class="revealed-ref">{{ v.reference }}</strong>
+            } @else {
+              <div class="hidden-verse-placeholder">
+                <i class="pi pi-lock-open hidden-icon"></i>
+                <h4>{{ v.reference }}</h4>
+                <p class="hint-text">Pista: {{ v.hint }}</p>
+                <span class="btn-reveal-pill">¡Revelar Versículo!</span>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- INTERACTIVE SECTION 3: Historias Bíblicas Ilustradas -->
+  <section class="kids-section stories-section" aria-label="Historias Bíblicas">
+    <div class="kids-section-header">
+      <span class="badge-pill">Historias de la Fe</span>
+      <h2>Aventuras Bíblicas para Aprender</h2>
+      <p>Historias de héroes reales que amaron a Dios y vieron Sus milagros.</p>
+    </div>
+
+    <div class="stories-grid">
+      @for (story of stories(); track story.id) {
+        <div class="story-card glass-panel" (click)="openStory(story)">
+          <div class="story-icon-box">
+            <i [class]="story.icon"></i>
+          </div>
+          <span class="story-ref">{{ story.bibleReference }}</span>
+          <h3 class="story-title">{{ story.title }}</h3>
+          <p class="story-moral"><strong>Enseñanza:</strong> {{ story.moral }}</p>
+          <p class="story-sum">{{ story.summary }}</p>
+          <button type="button" class="btn-read-story">
+            <span>Leer Historia Completa</span>
+            <i class="pi pi-arrow-right"></i>
+          </button>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- SECTION 4: Descargables para Colorear -->
+  <section class="kids-section coloring-section" aria-label="Dibujos para Colorear">
+    <div class="coloring-box glass-panel">
+      <div class="coloring-header">
+        <span class="badge-pill">Arte & Creatividad</span>
+        <h2>Dibujos Bíblicos para Colorear</h2>
+        <p>Descarga o imprime estas láminas para colorear en casa o en la escuela dominical.</p>
+      </div>
+
+      <div class="coloring-sheets-grid">
+        <div class="sheet-item">
+          <div class="sheet-preview">
+            <i class="pi pi-palette"></i>
+            <span>David y Goliat</span>
+          </div>
+          <button type="button" class="btn-print" (click)="printColoringPage('David y Goliat')">
+            <i class="pi pi-print"></i> Imprimir Dibujo
+          </button>
+        </div>
+
+        <div class="sheet-item">
+          <div class="sheet-preview">
+            <i class="pi pi-cloud"></i>
+            <span>El Arca y el Arcoíris</span>
+          </div>
+          <button type="button" class="btn-print" (click)="printColoringPage('El Arca de Noé')">
+            <i class="pi pi-print"></i> Imprimir Dibujo
+          </button>
+        </div>
+
+        <div class="sheet-item">
+          <div class="sheet-preview">
+            <i class="pi pi-heart"></i>
+            <span>Jesús Ama a los Niños</span>
+          </div>
+          <button type="button" class="btn-print" (click)="printColoringPage('Jesús y los Niños')">
+            <i class="pi pi-print"></i> Imprimir Dibujo
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal for Story Details -->
+  @if (activeStory()) {
+    <div class="custom-modal-backdrop" (click)="closeStory()">
+      <div class="custom-modal-content glass-panel" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <div>
+            <span class="modal-badge">{{ activeStory()?.bibleReference }}</span>
+            <h2 class="modal-title">{{ activeStory()?.title }}</h2>
+          </div>
+          <button type="button" class="modal-close" (click)="closeStory()">
+            <i class="pi pi-times"></i>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div class="story-modal-box">
+            <p class="story-modal-text">{{ activeStory()?.summary }}</p>
+            <div class="moral-box">
+              <i class="pi pi-star-fill"></i>
+              <div>
+                <strong>¿Qué aprendemos hoy?</strong>
+                <p>{{ activeStory()?.moral }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="modal-btn-cal" (click)="closeStory()">
+            ¡Entendido! Regresar a Juegos
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

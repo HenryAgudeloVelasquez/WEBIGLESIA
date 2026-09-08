@@ -1,0 +1,258 @@
+<div class="content-page page-container">
+  <!-- Header -->
+  <header class="section-header">
+    <span class="section-tag">Palabra & Alimento Espiritual</span>
+    <h1 class="section-title">El Evangelio & Enseñanzas</h1>
+    <p class="section-subtitle">
+      Alimenta tu fe y la de tu familia a través de prédicas expositivas, devocionales semanales
+      y las verdades transformadoras de la gracia de Dios.
+    </p>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <div class="tabs-nav-container">
+    <div class="tabs-wrapper">
+      <button
+        type="button"
+        class="tab-btn"
+        [class.active]="currentTab() === 'sermons'"
+        (click)="setTab('sermons')"
+      >
+        <i class="pi pi-video"></i>
+        <span>Prédicas & Mensajes</span>
+      </button>
+
+      <button
+        type="button"
+        class="tab-btn"
+        [class.active]="currentTab() === 'devotional'"
+        (click)="setTab('devotional')"
+      >
+        <i class="pi pi-book"></i>
+        <span>Devocional Semanal</span>
+      </button>
+
+      <button
+        type="button"
+        class="tab-btn"
+        [class.active]="currentTab() === 'gospel-plan'"
+        (click)="setTab('gospel-plan')"
+      >
+        <i class="pi pi-heart-fill"></i>
+        <span>Plan de Salvación</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- TAB 1: Prédicas y Mensajes -->
+  @if (currentTab() === 'sermons') {
+    <div class="sermons-tab-content">
+      <!-- Search & Tags Bar -->
+      <div class="search-filter-bar glass-panel">
+        <div class="search-input-box">
+          <i class="pi pi-search"></i>
+          <input
+            type="text"
+            placeholder="Buscar por título, pastor, tema o cita bíblica..."
+            (input)="onSearch($event)"
+            [value]="searchQuery()"
+          />
+        </div>
+
+        <div class="tags-row">
+          <span class="tags-label">Temas:</span>
+          @for (tag of tags; track tag) {
+            <button
+              type="button"
+              class="tag-chip"
+              [class.active]="selectedTag() === tag"
+              (click)="setTag(tag)"
+            >
+              {{ tag }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Active Mini Audio Player (if sermon selected) -->
+      @if (activePlayingSermon()) {
+        <div class="now-playing-banner glass-panel animate-fade-up">
+          <div class="player-left">
+            <button type="button" class="btn-play-toggle" (click)="playSermon(activePlayingSermon()!)">
+              <i [class]="isAudioPlaying() ? 'pi pi-pause' : 'pi pi-play'"></i>
+            </button>
+            <div class="player-info">
+              <span class="playing-status">
+                {{ isAudioPlaying() ? 'Reproduciendo Audio en Vivo:' : 'En pausa:' }}
+              </span>
+              <strong class="playing-title">{{ activePlayingSermon()?.title }}</strong>
+              <span class="playing-meta">{{ activePlayingSermon()?.preacher }} • {{ activePlayingSermon()?.passage }}</span>
+            </div>
+          </div>
+          <div class="player-right">
+            <button type="button" class="btn-dl-notes" (click)="downloadNotes(activePlayingSermon()!)">
+              <i class="pi pi-download"></i>
+              <span>Descargar Bosquejo PDF</span>
+            </button>
+          </div>
+        </div>
+      }
+
+      <!-- Sermons Grid -->
+      <div class="sermons-grid">
+        @for (sermon of filteredSermons(); track sermon.id) {
+          <article class="sermon-card glass-panel">
+            <div class="sermon-card-top">
+              <span class="series-badge">{{ sermon.series }}</span>
+              <span class="sermon-date">{{ sermon.date }}</span>
+            </div>
+
+            <h3 class="sermon-card-title">{{ sermon.title }}</h3>
+
+            <div class="sermon-card-meta">
+              <span><i class="pi pi-user"></i> {{ sermon.preacher }}</span>
+              <span><i class="pi pi-bookmark"></i> {{ sermon.passage }}</span>
+              <span><i class="pi pi-clock"></i> {{ sermon.duration }}</span>
+            </div>
+
+            <p class="sermon-card-summary">{{ sermon.summary }}</p>
+
+            <div class="sermon-tags-chips">
+              @for (t of sermon.tags; track t) {
+                <span class="mini-tag">#{{ t }}</span>
+              }
+            </div>
+
+            <div class="sermon-card-actions">
+              <button type="button" class="btn-play" (click)="playSermon(sermon)">
+                <i [class]="activePlayingSermon()?.id === sermon.id && isAudioPlaying() ? 'pi pi-pause' : 'pi pi-play'"></i>
+                <span>{{ activePlayingSermon()?.id === sermon.id && isAudioPlaying() ? 'Pausar' : 'Escuchar' }}</span>
+              </button>
+
+              <button type="button" class="btn-notes" (click)="downloadNotes(sermon)">
+                <i class="pi pi-file-pdf"></i>
+                <span>Bosquejo</span>
+              </button>
+            </div>
+          </article>
+        } @empty {
+          <div class="empty-search-state glass-panel">
+            <i class="pi pi-search-minus"></i>
+            <h3>No encontramos prédicas que coincidan con tu búsqueda</h3>
+            <p>Intenta con otra palabra clave o selecciona otro tema.</p>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- TAB 2: Devocional Semanal -->
+  @if (currentTab() === 'devotional') {
+    <div class="devotional-tab-content">
+      <article class="devotional-article glass-panel">
+        <header class="devotional-header">
+          <span class="devotional-tag">Devocional de la Semana</span>
+          <h2 class="devotional-title">{{ devotional().title }}</h2>
+          <div class="devotional-byline">
+            <span><i class="pi pi-user"></i> Por: {{ devotional().author }}</span>
+            <span><i class="pi pi-calendar"></i> {{ devotional().date }}</span>
+          </div>
+        </header>
+
+        <!-- Key Scripture Box -->
+        <div class="key-scripture-box">
+          <i class="pi pi-quote-left scripture-icon"></i>
+          <blockquote>"{{ devotional().keyVerse }}"</blockquote>
+          <cite>— {{ devotional().verseReference }}</cite>
+        </div>
+
+        <!-- Reflection Paragraphs -->
+        <div class="reflection-body">
+          @for (paragraph of devotional().reflection; track paragraph) {
+            <p>{{ paragraph }}</p>
+          }
+        </div>
+
+        <!-- Guided Prayer Section -->
+        <div class="prayer-section">
+          <div class="prayer-header">
+            <div class="prayer-title-box">
+              <i class="pi pi-heart-fill"></i>
+              <h3>Oración para Compartir en Familia</h3>
+            </div>
+            <button type="button" class="btn-copy-prayer" (click)="copyDevotionalPrayer()">
+              <i class="pi pi-copy"></i>
+              <span>Copiar Oración</span>
+            </button>
+          </div>
+          <p class="prayer-text">"{{ devotional().prayer }}"</p>
+        </div>
+      </article>
+    </div>
+  }
+
+  <!-- TAB 3: Plan de Salvación (El Evangelio de la Gracia) -->
+  @if (currentTab() === 'gospel-plan') {
+    <div class="gospel-plan-tab-content">
+      <div class="gospel-intro-card glass-panel">
+        <h2 class="gospel-heading">El Mensaje que Cambió la Historia: La Buena Noticia de la Gracia</h2>
+        <p class="gospel-sub">
+          La salvación no es un logro humano ni el resultado de nuestras buenas obras; es el regalo de amor más grande
+          que Dios le ha entregado a la humanidad a través de Su Hijo Jesucristo.
+        </p>
+      </div>
+
+      <div class="gospel-steps-grid">
+        <!-- Paso 1 -->
+        <div class="step-card glass-panel">
+          <div class="step-number">1</div>
+          <h3>El Amor Incondicional de Dios</h3>
+          <p class="step-verse">"Porque de tal manera amó Dios al mundo, que ha dado a su Hijo unigénito, para que todo aquel que en él cree, no se pierda, mas tenga vida eterna." (Juan 3:16)</p>
+          <p class="step-desc">Dios te creó con propósito. Su anhelo no es juzgarte, sino restaurar tu comunión con Él y darte una vida abundante.</p>
+        </div>
+
+        <!-- Paso 2 -->
+        <div class="step-card glass-panel">
+          <div class="step-number">2</div>
+          <h3>La Separación por el Pecado</h3>
+          <p class="step-verse">"Por cuanto todos pecaron, y están destituidos de la gloria de Dios." (Romanos 3:23)</p>
+          <p class="step-desc">Nuestras equivocaciones y faltas nos apartaron de Dios, y por nuestros propios méritos es imposible cruzar ese abismo.</p>
+        </div>
+
+        <!-- Paso 3 -->
+        <div class="step-card glass-panel">
+          <div class="step-number">3</div>
+          <h3>La Cruz: El Pago Completo</h3>
+          <p class="step-verse">"Mas Dios muestra su amor para con nosotros, en que siendo aún pecadores, Cristo murió por nosotros." (Romanos 5:8)</p>
+          <p class="step-desc">Jesús ocupó nuestro lugar en la cruz. Su sacrificio perdonó todos tus pecados pasados, presentes y futuros de forma definitiva.</p>
+        </div>
+
+        <!-- Paso 4 -->
+        <div class="step-card glass-panel highlight-step">
+          <div class="step-number">4</div>
+          <h3>Recibir el Regalo por Fe</h3>
+          <p class="step-verse">"Si confesares con tu boca que Jesús es el Señor, y creyeres en tu corazón que Dios le levantó de los muertos, serás salvo." (Romanos 10:9)</p>
+          <p class="step-desc">Solo necesitas abrir tu corazón y dar un paso de fe. ¡Hoy puedes empezar de nuevo como hijo amado de Dios!</p>
+        </div>
+      </div>
+
+      <!-- Prayer of Faith Banner -->
+      <div class="faith-prayer-banner glass-panel">
+        <h3>¿Deseas entregar tu vida a Jesús hoy?</h3>
+        <p>Haz esta sencilla oración de fe en voz alta desde el fondo de tu corazón:</p>
+        <blockquote class="faith-quote">
+          "Señor Jesús, hoy reconozco que te necesito. Creo con todo mi corazón que moriste en la cruz por mis pecados y resucitaste al tercer día. Te recibo como mi único Señor y Salvador. Limpia mi corazón, restaura mi familia y escribe mi nombre en el Libro de la Vida. Amén."
+        </blockquote>
+        <a
+          href="https://wa.me/573001234567?text=%C2%A1Hola!%20Hice%20la%20oraci%C3%B3n%20de%20fe%20y%20deseo%20que%20me%20gu%C3%ADen%20en%20mis%20primeros%20pasos%20con%20Jes%C3%BAs"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-wa-faith"
+        >
+          <i class="pi pi-whatsapp"></i>
+          <span>¡Hice esta oración! Quiero que me acompañen</span>
+        </a>
+      </div>
+    </div>
+  }
+</div>

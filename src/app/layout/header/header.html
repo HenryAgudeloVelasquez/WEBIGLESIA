@@ -1,0 +1,118 @@
+<header class="church-header" role="banner">
+  <div class="header-inner">
+    <!-- Brand / Logo -->
+    <a routerLink="/home" class="church-brand" (click)="closeMenu()" aria-label="Ir a Inicio - En su Gracia">
+      <div class="logo-wrapper">
+        <img src="assets/images/logo.png" alt="Logo Ministerio de Restauración Familiar - En su Gracia" class="church-logo" />
+      </div>
+      <div class="brand-text">
+        <span class="brand-sub">Ministerio de Restauración Familiar</span>
+        <span class="brand-main gold-gradient-text">En su Gracia</span>
+      </div>
+    </a>
+
+    <!-- Desktop Navigation -->
+    <nav class="desktop-nav" aria-label="Navegación principal">
+      <ul class="nav-list">
+        @for (item of navItems(); track item.route) {
+          <li class="nav-item">
+            <a
+              [routerLink]="item.route"
+              routerLinkActive="active-link"
+              [routerLinkActiveOptions]="{ exact: item.route === '/home' }"
+              [class.highlight-kids]="item.highlight"
+              class="nav-link"
+            >
+              <i [class]="item.icon" class="link-icon"></i>
+              <span>{{ item.label }}</span>
+              @if (item.highlight) {
+                <span class="kids-badge">Niños</span>
+              }
+            </a>
+          </li>
+        }
+      </ul>
+    </nav>
+
+    <!-- Header Actions -->
+    <div class="header-actions">
+      <!-- Theme Toggle -->
+      <button
+        type="button"
+        class="theme-toggle-btn"
+        (click)="toggleDarkMode()"
+        [pTooltip]="themeLabel()"
+        tooltipPosition="bottom"
+        [attr.aria-label]="themeLabel()"
+      >
+        <i [class]="themeIcon()"></i>
+      </button>
+
+      <!-- WhatsApp Direct Contact -->
+      <a
+        href="https://wa.me/573001234567?text=%C2%A1Hola!%20Deseo%20conocer%20m%C3%A1s%20de%20la%20iglesia%20En%20su%20Gracia"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="header-wa-btn"
+        aria-label="Contactar por WhatsApp"
+      >
+        <i class="pi pi-whatsapp"></i>
+        <span class="btn-text">Oración</span>
+      </a>
+
+      <!-- Mobile Menu Toggle -->
+      <button
+        type="button"
+        class="mobile-toggle-btn"
+        (click)="toggleMenu()"
+        [attr.aria-expanded]="isMenuOpen()"
+        aria-label="Abrir menú de navegación"
+      >
+        <i [class]="isMenuOpen() ? 'pi pi-times' : 'pi pi-bars'"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Drawer Menu -->
+  @if (isMenuOpen()) {
+    <div class="mobile-drawer" role="dialog" aria-modal="true">
+      <nav class="mobile-nav">
+        <ul class="mobile-nav-list">
+          @for (item of navItems(); track item.route) {
+            <li>
+              <a
+                [routerLink]="item.route"
+                routerLinkActive="active-mobile-link"
+                [routerLinkActiveOptions]="{ exact: item.route === '/home' }"
+                [class.mobile-highlight-kids]="item.highlight"
+                (click)="closeMenu()"
+                class="mobile-nav-link"
+              >
+                <div class="mobile-link-left">
+                  <i [class]="item.icon"></i>
+                  <span>{{ item.label }}</span>
+                </div>
+                @if (item.highlight) {
+                  <span class="kids-badge">¡Diversión!</span>
+                }
+              </a>
+            </li>
+          }
+        </ul>
+
+        <div class="mobile-footer-actions">
+          <a
+            href="https://wa.me/573001234567?text=%C2%A1Hola!%20Deseo%20conocer%20m%C3%A1s%20de%20la%20iglesia%20En%20su%20Gracia"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mobile-wa-banner"
+            (click)="closeMenu()"
+          >
+            <i class="pi pi-whatsapp"></i>
+            <span>Escribirnos a WhatsApp</span>
+          </a>
+        </div>
+      </nav>
+    </div>
+  }
+</header>

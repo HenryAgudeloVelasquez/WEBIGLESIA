@@ -1,0 +1,193 @@
+.services-page {
+  position: relative;
+}
+
+.ministries-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5rem;
+  margin-bottom: 4rem;
+
+  @media (max-width: 860px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ministry-card {
+  padding: 2.75rem 2.25rem;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: rgba(212, 175, 55, 0.4);
+  }
+
+  .ministry-icon-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: var(--radius-full);
+    background: rgba(212, 175, 55, 0.12);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .ministry-title {
+    font-size: 1.45rem;
+    color: var(--color-text-primary);
+    margin-bottom: 0.35rem;
+  }
+
+  .ministry-sub {
+    font-size: 0.925rem;
+    color: var(--color-primary-light);
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+
+  .ministry-schedule {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    i {
+      color: var(--color-primary);
+    }
+  }
+
+  .ministry-desc {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+    margin-bottom: 1.5rem;
+  }
+
+  .ministry-benefits-box {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+
+    html:not(.app-dark) & {
+      background: #F8FAFC;
+      border-color: #E2E8F0;
+    }
+
+    strong {
+      display: block;
+      font-size: 0.825rem;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: 0.6rem;
+      letter-spacing: 0.05em;
+    }
+
+    ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+
+      li {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.875rem;
+        color: var(--color-text-secondary);
+
+        i {
+          color: #10B981;
+          font-size: 0.8rem;
+        }
+      }
+    }
+  }
+
+  .ministry-actions {
+    margin-top: auto;
+
+    .btn-schedule-wa {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #25D366;
+      color: white;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-md);
+      transition: all var(--transition-fast);
+
+      &:hover {
+        background: #20BA5A;
+        transform: translateY(-2px);
+      }
+    }
+  }
+}
+
+.counseling-cta-banner {
+  padding: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+  border: 1px solid rgba(139, 30, 45, 0.4);
+  background: linear-gradient(135deg, rgba(139, 30, 45, 0.25) 0%, rgba(13, 28, 52, 0.95) 70%);
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+  }
+
+  .banner-text {
+    max-width: 680px;
+
+    h2 {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      margin: 1rem 0;
+      color: var(--color-text-primary);
+    }
+
+    p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--color-text-secondary);
+    }
+  }
+
+  .banner-cta {
+    flex-shrink: 0;
+
+    .btn-counseling-lead {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: #25D366;
+      color: white;
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 0.9rem 2rem;
+      border-radius: var(--radius-full);
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.35);
+      transition: transform var(--transition-base);
+
+      &:hover {
+        transform: translateY(-2px);
+        background: #20BA5A;
+      }
+    }
+  }
+}

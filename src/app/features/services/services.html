@@ -1,0 +1,77 @@
+<div class="services-page page-container">
+  <!-- Header -->
+  <header class="section-header">
+    <span class="section-tag">Amor en Acción</span>
+    <h1 class="section-title">Servicios a la Comunidad & Ministerios</h1>
+    <p class="section-subtitle">
+      No solo nos reunimos los fines de semana: servimos de corazón a las familias de nuestra ciudad
+      con consejería gratuita, grupos de apoyo, educación bíblica y ayuda social.
+    </p>
+  </header>
+
+  <!-- Ministries Grid -->
+  <div class="ministries-grid">
+    @for (ministry of ministries(); track ministry.id) {
+      <div class="ministry-card glass-panel">
+        <div class="ministry-icon-circle">
+          <i [class]="ministry.icon"></i>
+        </div>
+
+        <h2 class="ministry-title">{{ ministry.title }}</h2>
+        <p class="ministry-sub">{{ ministry.subtitle }}</p>
+
+        <div class="ministry-schedule">
+          <i class="pi pi-clock"></i>
+          <span>{{ ministry.schedule }}</span>
+        </div>
+
+        <p class="ministry-desc">{{ ministry.description }}</p>
+
+        <div class="ministry-benefits-box">
+          <strong>Beneficios & Qué incluye:</strong>
+          <ul>
+            @for (benefit of ministry.benefits; track benefit) {
+              <li><i class="pi pi-check"></i> {{ benefit }}</li>
+            }
+          </ul>
+        </div>
+
+        <div class="ministry-actions">
+          <a
+            [href]="getWhatsAppScheduleUrl(ministry)"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-schedule-wa"
+          >
+            <i class="pi pi-whatsapp"></i>
+            <span>{{ ministry.contactAction }}</span>
+          </a>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Prayer Request & Counseling Banner -->
+  <section class="counseling-cta-banner glass-panel">
+    <div class="banner-text">
+      <span class="badge-pill">Atención 100% Confidencial</span>
+      <h2>¿Estás atravesando una crisis en tu matrimonio o con tus hijos?</h2>
+      <p>
+        No enfrentes la tormenta a solas. Nuestros pastores y consejeros familiares están listos
+        para escucharte, orar contigo y brindarte orientación fundamentada en la gracia de Dios.
+      </p>
+    </div>
+
+    <div class="banner-cta">
+      <a
+        href="https://wa.me/573001234567?text=%C2%A1Hola!%20Necesito%20agendar%20una%20cita%20de%20consejer%C3%ADa%20familiar%20confidencial."
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-counseling-lead"
+      >
+        <i class="pi pi-whatsapp"></i>
+        <span>Solicitar Consejería Privada</span>
+      </a>
+    </div>
+  </section>
+</div>

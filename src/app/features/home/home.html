@@ -1,0 +1,264 @@
+<div class="home-page">
+  <!-- Hero Section -->
+  <section class="hero-section" aria-label="Bienvenida a En su Gracia">
+    <div class="hero-background-glow"></div>
+    <div class="hero-inner">
+      <!-- Church Emblem Showcase -->
+      <div class="hero-emblem-container animate-fade-up">
+        <div class="emblem-halo"></div>
+        <div class="emblem-card">
+          <img
+            src="assets/images/logo.png"
+            alt="Logotipo Oficial - Ministerio de Restauración Familiar En su Gracia"
+            class="hero-logo-img"
+          />
+        </div>
+      </div>
+
+      <!-- Hero Content -->
+      <div class="hero-content animate-fade-up">
+        <div class="hero-tag">
+          <i class="pi pi-sparkles"></i>
+          <span>Comunidad Cristiana de Fe & Esperanza</span>
+        </div>
+
+        <h1 class="hero-headline">
+          Un Lugar de Amor, Gracia y
+          <span class="gold-gradient-text">Restauración para tu Familia</span>
+        </h1>
+
+        <p class="hero-lead">
+          Te damos la bienvenida al <strong>Ministerio de Restauración Familiar - En su Gracia</strong>.
+          Creemos que en Jesucristo todo hogar puede levantarse, sanar y experimentar una vida plena en Su amor infinito.
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="hero-cta-group">
+          <a routerLink="/eventos" class="cta-primary-btn">
+            <i class="pi pi-calendar"></i>
+            <span>Próximos Eventos & Cultos</span>
+          </a>
+
+          <a
+            href="https://wa.me/573001234567?text=%C2%A1Hola!%20Me%20gustar%C3%ADa%20planear%20mi%20visita%20a%20la%20iglesia"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="cta-secondary-btn"
+          >
+            <i class="pi pi-whatsapp"></i>
+            <span>Planear mi Visita</span>
+          </a>
+
+          <a routerLink="/kids" class="cta-kids-btn">
+            <i class="pi pi-star-fill"></i>
+            <span>¡Zona Gracia Kids!</span>
+          </a>
+        </div>
+
+        <!-- Sunday Service Countdown Card -->
+        <div class="countdown-card glass-panel">
+          <div class="countdown-header">
+            <div class="cd-title-box">
+              <span class="live-dot"></span>
+              <span class="cd-title">Próximo Culto Dominical de Celebración</span>
+            </div>
+            <span class="cd-time-label">Domingo 10:00 AM</span>
+          </div>
+
+          <div class="countdown-grid">
+            <div class="time-block">
+              <span class="time-val">{{ countdown().days }}</span>
+              <span class="time-lbl">Días</span>
+            </div>
+            <div class="time-separator">:</div>
+            <div class="time-block">
+              <span class="time-val">{{ countdown().hours }}</span>
+              <span class="time-lbl">Horas</span>
+            </div>
+            <div class="time-separator">:</div>
+            <div class="time-block">
+              <span class="time-val">{{ countdown().minutes }}</span>
+              <span class="time-lbl">Minutos</span>
+            </div>
+            <div class="time-separator">:</div>
+            <div class="time-block">
+              <span class="time-val">{{ countdown().seconds }}</span>
+              <span class="time-lbl">Segundos</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Verse of the Day Section -->
+  <section class="verse-section" aria-label="Versículo del Altar">
+    <div class="page-container">
+      <div class="verse-card glass-panel">
+        <div class="verse-glow-badge">Promesa de Dios para tu Casa</div>
+        <blockquote class="verse-quote">
+          "{{ motto().familyVerse }}"
+        </blockquote>
+        <cite class="verse-cite">— {{ motto().familyReference }}</cite>
+
+        <div class="verse-actions">
+          <button type="button" class="action-pill-btn" (click)="copyVerse()">
+            <i class="pi pi-copy"></i>
+            <span>Copiar Versículo</span>
+          </button>
+          <a
+            [href]="'https://wa.me/?text=' + ('«' + motto().familyVerse + '» — ' + motto().familyReference + ' | En su Gracia')"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="action-pill-btn wa-share"
+          >
+            <i class="pi pi-whatsapp"></i>
+            <span>Compartir con Familia</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 Pillars of Restoration Section -->
+  <section class="pillars-section" aria-label="Pilares del Ministerio">
+    <div class="page-container">
+      <div class="section-header">
+        <span class="section-tag">Nuestra Identidad</span>
+        <h2 class="section-title">Los 4 Pilares de Nuestra Comunidad</h2>
+        <p class="section-subtitle">
+          Guiados por las Sagradas Escrituras, cultivamos un ambiente donde cada miembro de la familia encuentra propósito, aceptación y transformación.
+        </p>
+      </div>
+
+      <div class="pillars-grid">
+        @for (pillar of pillars; track pillar.title) {
+          <div class="pillar-card glass-panel">
+            <div class="pillar-top">
+              <div class="pillar-icon-box" [style.background-color]="pillar.color + '1A'" [style.color]="pillar.color">
+                <i [class]="pillar.icon"></i>
+              </div>
+              <span class="pillar-badge">{{ pillar.badge }}</span>
+            </div>
+            <h3 class="pillar-title">{{ pillar.title }}</h3>
+            <p class="pillar-desc">{{ pillar.description }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Sermon & Gospel Teaching Banner -->
+  <section class="featured-sermon-section" aria-label="Última Enseñanza">
+    <div class="page-container">
+      <div class="sermon-spotlight-card glass-panel">
+        <div class="sermon-info">
+          <span class="badge-pill">Enseñanza Reciente</span>
+          <h2 class="sermon-title">{{ latestSermon().title }}</h2>
+          <p class="sermon-meta">
+            <span><i class="pi pi-user"></i> {{ latestSermon().preacher }}</span>
+            <span><i class="pi pi-book"></i> {{ latestSermon().passage }}</span>
+            <span><i class="pi pi-clock"></i> {{ latestSermon().duration }}</span>
+          </p>
+          <p class="sermon-summary">{{ latestSermon().summary }}</p>
+          
+          <div class="sermon-actions">
+            <a routerLink="/evangelio" class="btn-watch-sermon">
+              <i class="pi pi-play-circle"></i>
+              <span>Escuchar / Ver Enseñanza</span>
+            </a>
+            <a routerLink="/evangelio" class="btn-more-teachings">
+              <span>Explorar Todas las Prédicas</span>
+              <i class="pi pi-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="sermon-visual">
+          <div class="sermon-play-preview">
+            <i class="pi pi-play play-pulse-icon"></i>
+            <span class="preview-label">Serie: {{ latestSermon().series }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Upcoming Events Preview -->
+  <section class="events-preview-section" aria-label="Próximos Eventos">
+    <div class="page-container">
+      <div class="section-header">
+        <span class="section-tag">Agenda Familiar</span>
+        <h2 class="section-title">Próximas Citas y Encuentros</h2>
+        <p class="section-subtitle">
+          Participa en nuestras vigilias, congresos matrimoniales y campamentos. ¡Toda la familia está invitada!
+        </p>
+      </div>
+
+      <div class="events-preview-grid">
+        @for (event of featuredEvents(); track event.id) {
+          <div class="event-card-preview glass-panel">
+            <div class="event-date-badge">
+              <span class="ev-date">{{ event.date }}</span>
+              <span class="ev-badge">{{ event.badge }}</span>
+            </div>
+            <h3 class="event-title">{{ event.title }}</h3>
+            <p class="event-sub">{{ event.subtitle }}</p>
+            <div class="event-meta-row">
+              <span><i class="pi pi-clock"></i> {{ event.time }}</span>
+              <span><i class="pi pi-map-marker"></i> {{ event.location }}</span>
+            </div>
+            <a routerLink="/eventos" class="event-link-btn">
+              <span>Ver detalles e inscripción</span>
+              <i class="pi pi-arrow-right"></i>
+            </a>
+          </div>
+        }
+      </div>
+
+      <div class="center-cta-box">
+        <a routerLink="/eventos" class="cta-outline-gold">
+          <span>Consultar Calendario Completo</span>
+          <i class="pi pi-calendar"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Welcome / Pastoral Care Invitation -->
+  <section class="pastoral-welcome-section" aria-label="Bienvenida Pastoral">
+    <div class="page-container">
+      <div class="pastoral-card glass-panel">
+        <div class="pastoral-content">
+          <span class="badge-pill">Un Mensaje de los Pastores</span>
+          <h2 class="pastoral-heading">"En esta casa nadie camina solo"</h2>
+          <p class="pastoral-text">
+            No importa cuál sea la situación que atraviese tu matrimonio, tus hijos o tu corazón: en el
+            <strong>Ministerio de Restauración Familiar</strong> hemos sido testigos de cómo la gracia de Dios
+            reconstruye lo que parecía imposible. Te esperamos con los brazos abiertos este domingo.
+          </p>
+          <div class="pastoral-signature">
+            <strong>Cuerpo Pastoral</strong>
+            <span>Ministerio de Restauración Familiar - En su Gracia</span>
+          </div>
+
+          <div class="pastoral-actions">
+            <a
+              href="https://wa.me/573001234567?text=%C2%A1Hola!%20Me%20gustar%C3%ADa%20conversar%20con%20un%20pastor%20para%20orientaci%C3%B3n"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="pastor-wa-btn"
+            >
+              <i class="pi pi-whatsapp"></i>
+              <span>Solicitar Orientación Pastoral</span>
+            </a>
+            <a routerLink="/servicios" class="pastor-services-btn">
+              <span>Conocer Consejería Familiar</span>
+              <i class="pi pi-heart"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
