@@ -31,11 +31,24 @@ export class HomeComponent implements OnInit {
   private readonly messageService = inject(MessageService);
 
   readonly motto = this.churchService.ministryMotto;
+  readonly communityImageUrl = computed(() => {
+    const raw = (this.motto() as any)?.communityImage || (this.motto() as any)?.image;
+    if (raw && typeof raw === 'string' && raw.trim().length > 0) {
+      const trimmed = raw.trim();
+      const driveMatch = trimmed.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+      if (driveMatch && driveMatch[1]) {
+        return `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
+      }
+      return trimmed;
+    }
+    return 'assets/images/comunidad.jpg';
+  });
   readonly events = this.churchService.events;
   readonly featuredEvents = computed(() => this.events().slice(0, 3));
   readonly sermons = this.churchService.sermons;
   readonly latestSermon = computed(() => this.sermons()[0]);
   readonly env = environment;
+
 
   // Countdown al próximo domingo 10:00 AM
   readonly countdown = signal<TimeLeft>({ days: 0, hours: 0, minutes: 0, seconds: 0 });

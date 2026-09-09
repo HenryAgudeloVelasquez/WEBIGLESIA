@@ -1,7 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
   DestroyRef,
   inject,
   OnInit,
@@ -9,8 +8,6 @@ import {
 } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
-import { ButtonModule } from 'primeng/button';
-import { TooltipModule } from 'primeng/tooltip';
 import { filter } from 'rxjs';
 
 export interface NavItem {
@@ -23,7 +20,7 @@ export interface NavItem {
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, ButtonModule, TooltipModule],
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './header.html',
   styleUrl: './header.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,7 +30,6 @@ export class HeaderComponent implements OnInit {
   private readonly document = inject(DOCUMENT);
   private readonly destroyRef = inject(DestroyRef);
 
-  readonly isDarkMode = signal<boolean>(true);
   readonly isMenuOpen = signal<boolean>(false);
 
   readonly navItems = signal<NavItem[]>([
@@ -45,25 +41,10 @@ export class HeaderComponent implements OnInit {
     { label: 'Gracia Kids', route: '/kids', icon: 'pi pi-star', highlight: true },
   ]);
 
-  readonly themeIcon = computed(() =>
-    this.isDarkMode() ? 'pi pi-sun' : 'pi pi-moon',
-  );
-
-  readonly themeLabel = computed(() =>
-    this.isDarkMode() ? 'Cambiar a Modo Claro' : 'Cambiar a Modo Noche',
-  );
-
   ngOnInit(): void {
-    if (typeof localStorage !== 'undefined') {
-      const stored = localStorage.getItem('church-dark-mode');
-      const prefersDark =
-        stored !== null
-          ? stored === 'true'
-          : true; // Modo oscuro por defecto para resaltar el oro y azul marino
-
-      this.isDarkMode.set(prefersDark);
-      this.applyTheme(prefersDark);
-    }
+    // Modo oscuro permanente (Royal Navy & Oro Imperial)
+    const root = this.document.documentElement;
+    root.classList.add('app-dark');
 
     const navSub = this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
@@ -81,22 +62,5 @@ export class HeaderComponent implements OnInit {
   closeMenu(): void {
     this.isMenuOpen.set(false);
   }
-
-  toggleDarkMode(): void {
-    this.isDarkMode.update((v) => !v);
-    this.applyTheme(this.isDarkMode());
-
-    if (typeof localStorage !== 'undefined') {
-      localStorage.setItem('church-dark-mode', String(this.isDarkMode()));
-    }
-  }
-
-  private applyTheme(isDark: boolean): void {
-    const root = this.document.documentElement;
-    if (isDark) {
-      root.classList.add('app-dark');
-    } else {
-      root.classList.remove('app-dark');
-    }
-  }
 }
+

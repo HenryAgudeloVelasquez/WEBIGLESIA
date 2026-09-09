@@ -34,8 +34,10 @@ export class ChurchDataService {
     verse: 'Porque por gracia sois salvos por medio de la fe; y esto no de vosotros, pues es don de Dios.',
     reference: 'Efesios 2:8',
     familyVerse: 'Cree en el Señor Jesucristo, y serás salvo, tú y tu casa.',
-    familyReference: 'Hechos 16:31'
+    familyReference: 'Hechos 16:31',
+    communityImage: 'assets/images/comunidad.jpg',
   });
+
 
   // ==========================================
   // Eventos de la Iglesia
@@ -446,9 +448,14 @@ Hoy celebramos Tu fidelidad!
               if (Array.isArray(payload.kidsTrivia) && payload.kidsTrivia.length > 0) {
                 this.kidsTrivia.set(payload.kidsTrivia);
               }
-              if (payload.motto && payload.motto.theme) {
-                this.ministryMotto.set(payload.motto);
+              if (payload.motto && (payload.motto.theme || payload.motto.verse || payload.motto.communityImage || payload.motto.image)) {
+                this.ministryMotto.update(prev => ({
+                  ...prev,
+                  ...payload.motto,
+                  communityImage: payload.motto.communityImage || payload.motto.image || prev.communityImage,
+                }));
               }
+
               this.lastSyncDate.set(new Date());
             }
           } catch (e: any) {
