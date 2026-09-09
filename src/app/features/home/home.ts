@@ -31,18 +31,35 @@ export class HomeComponent implements OnInit {
   private readonly messageService = inject(MessageService);
 
   readonly motto = this.churchService.ministryMotto;
+  readonly imageLoadError = signal<boolean>(false);
+
   readonly communityImageUrl = computed(() => {
+    if (this.imageLoadError()) {
+      return 'assets/images/comunidad.jpg';
+    }
     const raw = (this.motto() as any)?.communityImage || (this.motto() as any)?.image;
     if (raw && typeof raw === 'string' && raw.trim().length > 0) {
       const trimmed = raw.trim();
-      const driveMatch = trimmed.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+      // Si el usuario pegó un enlace de Google Drive
+      const driveMatch = trimmed.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || trimmed.match(/id=([a-zA-Z0-9_-]+)/);
       if (driveMatch && driveMatch[1]) {
-        return `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
+        return `https://lh3.googleusercontent.com/d/${driveMatch[1]}`;
       }
-      return trimmed;
+      // Solo si es una URL web válida completa o ruta de assets
+      if (trimmed.startsWith('http://') || trimmed.startsWith('https://') || trimmed.startsWith('assets/')) {
+        return trimmed;
+      }
+      // Si es solo un nombre de archivo (ej: 'foto_comunidad_en_su_gracia.jpeg'), se usa el respaldo local
+      return 'assets/images/comunidad.jpg';
     }
     return 'assets/images/comunidad.jpg';
   });
+
+
+  onImageError(): void {
+    this.imageLoadError.set(true);
+  }
+
   readonly events = this.churchService.events;
   readonly featuredEvents = computed(() => this.events().slice(0, 3));
   readonly sermons = this.churchService.sermons;

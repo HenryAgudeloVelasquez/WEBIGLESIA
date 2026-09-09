@@ -234,10 +234,14 @@
             <div class="community-img-wrapper">
               <img
                 [src]="communityImageUrl()"
+                (error)="onImageError()"
+                referrerpolicy="no-referrer"
                 alt="Nuestra congregación y familias unidas en el Ministerio En su Gracia"
                 class="community-photo"
                 loading="lazy"
               />
+
+
 
               <div class="community-badge-overlay">
                 <i class="pi pi-users"></i>
