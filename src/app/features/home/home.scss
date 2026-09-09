@@ -1,22 +1,32 @@
 .home-page {
   position: relative;
   overflow-x: hidden;
+
+  .page-container {
+    min-height: auto;
+    padding: 0 1.5rem;
+  }
+
+  .section-header {
+    margin: 0 auto 2rem;
+  }
 }
 
 // Hero Section
 .hero-section {
   position: relative;
-  min-height: 88vh;
+  min-height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4rem 1.5rem 5rem;
+  padding: 3rem 1.5rem 2.25rem;
   background: radial-gradient(ellipse at 50% 15%, rgba(15, 37, 75, 0.7) 0%, rgba(6, 13, 26, 0.95) 75%);
 
   html:not(.app-dark) & {
     background: radial-gradient(ellipse at 50% 15%, rgba(212, 175, 55, 0.12) 0%, rgba(248, 250, 252, 0.95) 75%);
   }
 }
+
 
 .hero-background-glow {
   position: absolute;
@@ -37,10 +47,11 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 2.5rem;
+  gap: 1.5rem;
   position: relative;
   z-index: 2;
 }
+
 
 // Church Emblem Showcase
 .hero-emblem-container {
@@ -131,7 +142,7 @@
   color: var(--color-text-secondary);
   line-height: 1.7;
   max-width: 720px;
-  margin-bottom: 2.25rem;
+  margin-bottom: 1.5rem;
 
   strong {
     color: var(--color-primary-light);
@@ -145,7 +156,8 @@
   justify-content: center;
   gap: 1rem;
   flex-wrap: wrap;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
+
 
   .cta-primary-btn {
     display: inline-flex;
@@ -287,11 +299,11 @@
 
 // Verse Section
 .verse-section {
-  padding: 1rem 0 3rem;
+  padding: 1.25rem 0 1.5rem;
 
   .verse-card {
     text-align: center;
-    padding: 3rem 2.5rem;
+    padding: 2.25rem 2rem;
     border: 1px solid rgba(212, 175, 55, 0.25);
     position: relative;
     background: radial-gradient(circle at 50% 50%, rgba(13, 28, 52, 0.85) 0%, rgba(6, 13, 26, 0.95) 100%);
@@ -325,7 +337,8 @@
       font-size: 1.1rem;
       font-weight: 700;
       color: var(--color-primary-light);
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
+
     }
 
     .verse-actions {
@@ -366,12 +379,12 @@
 
 // 4 Pillars Section
 .pillars-section {
-  padding: 4rem 0;
+  padding: 2rem 0;
 
   .pillars-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1.75rem;
+    gap: 1.25rem;
 
     @media (max-width: 1024px) {
       grid-template-columns: repeat(2, 1fr);
@@ -383,8 +396,9 @@
   }
 
   .pillar-card {
-    padding: 2.25rem 1.75rem;
+    padding: 1.75rem 1.5rem;
     display: flex;
+
     flex-direction: column;
     height: 100%;
 
@@ -434,20 +448,21 @@
 
 // Featured Sermon Section
 .featured-sermon-section {
-  padding: 3rem 0 5rem;
+  padding: 2rem 0;
 
   .sermon-spotlight-card {
     display: grid;
     grid-template-columns: 1.4fr 1fr;
-    gap: 3rem;
-    padding: 3.5rem;
+    gap: 2rem;
+    padding: 2.25rem 2.5rem;
     align-items: center;
     border: 1px solid rgba(212, 175, 55, 0.25);
 
     @media (max-width: 900px) {
       grid-template-columns: 1fr;
-      padding: 2rem;
+      padding: 1.75rem;
     }
+
 
     .sermon-title {
       font-size: clamp(1.6rem, 3vw, 2.3rem);
@@ -548,13 +563,13 @@
 
 // Events Preview Section
 .events-preview-section {
-  padding: 3rem 0;
+  padding: 2rem 0;
 
   .events-preview-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    margin-bottom: 3rem;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
 
     @media (max-width: 900px) {
       grid-template-columns: 1fr;
@@ -562,8 +577,9 @@
   }
 
   .event-card-preview {
-    padding: 2rem;
+    padding: 1.75rem 1.5rem;
     display: flex;
+
     flex-direction: column;
 
     &:hover {
@@ -666,17 +682,18 @@
 
 // Pastoral Welcome & Community Section
 .pastoral-welcome-section {
-  padding: 4rem 0 6rem;
+  padding: 2rem 0 3.5rem;
 
   .pastoral-card {
-    padding: 3rem;
+    padding: 2.25rem 2.5rem;
     border-radius: var(--radius-2xl);
     background: linear-gradient(135deg, rgba(139, 30, 45, 0.15) 0%, rgba(13, 28, 52, 0.9) 60%);
     border: 1px solid rgba(212, 175, 55, 0.3);
 
     @media (max-width: 992px) {
-      padding: 2rem 1.5rem;
+      padding: 1.75rem 1.25rem;
     }
+
 
     .pastoral-grid {
       display: grid;
