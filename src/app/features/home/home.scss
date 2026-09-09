@@ -664,50 +664,145 @@
   }
 }
 
-// Pastoral Welcome Section
+// Pastoral Welcome & Community Section
 .pastoral-welcome-section {
   padding: 4rem 0 6rem;
 
   .pastoral-card {
-    padding: 3.5rem;
+    padding: 3rem;
     border-radius: var(--radius-2xl);
     background: linear-gradient(135deg, rgba(139, 30, 45, 0.15) 0%, rgba(13, 28, 52, 0.9) 60%);
     border: 1px solid rgba(212, 175, 55, 0.3);
 
-    @media (max-width: 768px) {
+    @media (max-width: 992px) {
       padding: 2rem 1.5rem;
     }
 
+    .pastoral-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+
+      @media (max-width: 992px) {
+        grid-template-columns: 1fr;
+        gap: 2.25rem;
+      }
+    }
+
+    .pastoral-image-col {
+      width: 100%;
+
+      .community-img-wrapper {
+        position: relative;
+        border-radius: var(--radius-xl);
+        overflow: hidden;
+        border: 2px solid rgba(212, 175, 55, 0.35);
+        box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+        transition: transform var(--transition-base), border-color var(--transition-base);
+
+        &:hover {
+          transform: scale(1.01);
+          border-color: var(--color-primary-light);
+        }
+
+        .community-photo {
+          width: 100%;
+          height: auto;
+          aspect-ratio: 16 / 10;
+          object-fit: cover;
+          display: block;
+        }
+
+        .community-badge-overlay {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          padding: 1rem 1.25rem;
+          background: linear-gradient(180deg, transparent 0%, rgba(6, 13, 26, 0.88) 35%, rgba(6, 13, 26, 0.96) 100%);
+          display: flex;
+          align-items: center;
+          gap: 0.85rem;
+          backdrop-filter: blur(6px);
+          -webkit-backdrop-filter: blur(6px);
+
+          i {
+            font-size: 1.6rem;
+            color: var(--color-primary-light);
+            background: rgba(212, 175, 55, 0.15);
+            padding: 0.5rem;
+            border-radius: var(--radius-md);
+          }
+
+          div {
+            display: flex;
+            flex-direction: column;
+
+            strong {
+              font-size: 0.95rem;
+              color: var(--color-text-primary);
+              font-weight: 700;
+            }
+
+            span {
+              font-size: 0.8rem;
+              color: var(--color-primary-light);
+            }
+          }
+        }
+      }
+    }
+
     .pastoral-heading {
-      font-size: clamp(1.8rem, 3.5vw, 2.5rem);
-      margin: 1.25rem 0;
+      font-size: clamp(1.8rem, 3vw, 2.3rem);
+      margin: 1rem 0;
       color: var(--color-text-primary);
     }
 
     .pastoral-text {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       line-height: 1.8;
       color: var(--color-text-secondary);
-      max-width: 860px;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
 
       strong {
         color: var(--color-primary-light);
+      }
+    }
+
+    .community-highlights {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      margin-bottom: 1.75rem;
+
+      .highlight-item {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-size: 0.925rem;
+        color: var(--color-text-primary);
+
+        i {
+          color: var(--color-primary-light);
+          font-size: 1rem;
+        }
       }
     }
 
     .pastoral-signature {
       display: flex;
       flex-direction: column;
-      margin-bottom: 2.25rem;
+      margin-bottom: 2rem;
 
       strong {
-        font-size: 1.1rem;
+        font-size: 1.05rem;
         color: var(--color-primary-light);
       }
 
       span {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         color: var(--color-text-muted);
       }
     }
