@@ -3,6 +3,7 @@ import {
   Component,
   computed,
   inject,
+  OnInit,
   signal,
 } from '@angular/core';
 import { ChurchDataService } from '../../core/services/church-data.service';
@@ -18,10 +19,11 @@ type TabView = 'sermons' | 'devotional' | 'gospel-plan';
   styleUrl: './content.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ContentComponent {
+export class ContentComponent implements OnInit {
   private readonly churchService = inject(ChurchDataService);
   private readonly messageService = inject(MessageService);
 
+  readonly isLoading = this.churchService.isLoadingData;
   readonly currentTab = signal<TabView>('sermons');
   readonly selectedTag = signal<string>('todos');
   readonly searchQuery = signal<string>('');
@@ -50,6 +52,10 @@ export class ContentComponent {
       return matchesTag && matchesQuery;
     });
   });
+
+  ngOnInit(): void {
+    this.churchService.syncAllFromGoogleSheets();
+  }
 
   setTab(tab: TabView): void {
     this.currentTab.set(tab);

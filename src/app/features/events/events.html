@@ -24,6 +24,13 @@
         </button>
       }
     </div>
+
+    @if (isLoading()) {
+      <div class="sync-status-badge">
+        <i class="pi pi-spin pi-spinner"></i>
+        <span>Sincronizando con Google Sheets...</span>
+      </div>
+    }
   </div>
 
   <!-- Events Grid -->

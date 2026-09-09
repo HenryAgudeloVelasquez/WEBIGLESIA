@@ -12,5 +12,7 @@ export const environment = {
     instagram: 'https://instagram.com/ensugracia',
     youtube: 'https://youtube.com/@ensugracia',
     spotify: 'https://spotify.com'
-  }
+  },
+  // URL de la Web App de Google Apps Script para sincronizar con Google Sheets
+  googleSheetsApiUrl: 'https://script.google.com/macros/s/AKfycbx3lKvsiQbzKyKQLTzpHxmOUpBCcPJtxpnnen_XrMER4TYL8YoTaluprjk_00XVxIMt/exec'
 };

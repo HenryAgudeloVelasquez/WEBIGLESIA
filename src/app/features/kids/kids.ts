@@ -3,6 +3,7 @@ import {
   Component,
   computed,
   inject,
+  OnInit,
   signal,
 } from '@angular/core';
 import { ChurchDataService } from '../../core/services/church-data.service';
@@ -16,13 +17,18 @@ import { MessageService } from 'primeng/api';
   styleUrl: './kids.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class KidsComponent {
+export class KidsComponent implements OnInit {
   private readonly churchService = inject(ChurchDataService);
   private readonly messageService = inject(MessageService);
 
+  readonly isLoading = this.churchService.isLoadingData;
   readonly triviaList = this.churchService.kidsTrivia;
   readonly stories = this.churchService.kidsStories;
   readonly verses = this.churchService.memoryVerses;
+
+  ngOnInit(): void {
+    this.churchService.syncAllFromGoogleSheets();
+  }
 
   // Active Story Modal
   readonly activeStory = signal<KidsStory | null>(null);

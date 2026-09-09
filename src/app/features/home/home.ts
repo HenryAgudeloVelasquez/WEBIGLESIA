@@ -73,6 +73,7 @@ export class HomeComponent implements OnInit {
   ];
 
   ngOnInit(): void {
+    this.churchService.syncAllFromGoogleSheets();
     this.calculateCountdown();
     if (typeof window !== 'undefined') {
       setInterval(() => this.calculateCountdown(), 1000);

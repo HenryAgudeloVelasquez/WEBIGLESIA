@@ -1,4 +1,6 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 import {
   ChurchEvent,
   Sermon,
@@ -14,6 +16,13 @@ import {
   providedIn: 'root',
 })
 export class ChurchDataService {
+  private readonly http = inject(HttpClient);
+
+  // Estados de sincronización con Google Sheets
+  readonly isLoadingData = signal<boolean>(false);
+  readonly lastSyncDate = signal<Date | null>(null);
+  readonly syncError = signal<string | null>(null);
+  private syncPromise: Promise<void> | null = null;
   // ==========================================
   // Versículo Central / Lema
   // ==========================================
@@ -380,5 +389,175 @@ Hoy celebramos Tu fidelidad!
 
   getEventById(id: string) {
     return computed(() => this.events().find(e => e.id === id));
+  }
+
+  // ==========================================
+  // Sincronización con Google Sheets
+  // ==========================================
+  async syncAllFromGoogleSheets(force: boolean = false): Promise<void> {
+    const apiUrl = environment.googleSheetsApiUrl?.trim();
+    if (!apiUrl) {
+      // Sin URL configurada: se mantienen intactos los datos locales de respaldo
+      return;
+    }
+
+    if (this.syncPromise && !force) {
+      return this.syncPromise;
+    }
+
+    if (this.lastSyncDate() && !force) {
+      return;
+    }
+
+    this.isLoadingData.set(true);
+    this.syncError.set(null);
+
+    this.syncPromise = new Promise<void>((resolve) => {
+      this.http.get<any>(apiUrl).subscribe({
+        next: (res) => {
+          try {
+            const payload = res?.data || res;
+            if (payload) {
+              if (Array.isArray(payload.events) && payload.events.length > 0) {
+                this.events.set(payload.events.map((e: ChurchEvent) => this.normalizeEvent(e)));
+              }
+              if (Array.isArray(payload.sermons) && payload.sermons.length > 0) {
+                this.sermons.set(payload.sermons.map((s: Sermon) => this.normalizeSermon(s)));
+              }
+              if (payload.devotional && payload.devotional.title) {
+                this.currentDevotional.set(payload.devotional);
+              }
+              if (Array.isArray(payload.choirSongs) && payload.choirSongs.length > 0) {
+                this.choirSongs.set(payload.choirSongs);
+              }
+              if (Array.isArray(payload.ministries) && payload.ministries.length > 0) {
+                this.ministries.set(payload.ministries);
+              }
+              if (Array.isArray(payload.kidsStories) && payload.kidsStories.length > 0) {
+                this.kidsStories.set(payload.kidsStories);
+              }
+              if (Array.isArray(payload.memoryVerses) && payload.memoryVerses.length > 0) {
+                this.memoryVerses.set(payload.memoryVerses);
+              }
+              if (Array.isArray(payload.kidsTrivia) && payload.kidsTrivia.length > 0) {
+                this.kidsTrivia.set(payload.kidsTrivia);
+              }
+              if (payload.motto && payload.motto.theme) {
+                this.ministryMotto.set(payload.motto);
+              }
+              this.lastSyncDate.set(new Date());
+            }
+          } catch (e: any) {
+            console.warn('Error al procesar datos de Google Sheets:', e);
+            this.syncError.set(e?.message || 'Error al procesar datos');
+          } finally {
+            this.isLoadingData.set(false);
+            this.syncPromise = null;
+            resolve();
+          }
+        },
+        error: (err) => {
+          console.warn('No se pudo sincronizar con Google Sheets. Usando datos de respaldo locales.', err);
+          this.syncError.set('No se pudo conectar con Google Sheets');
+          this.isLoadingData.set(false);
+          this.syncPromise = null;
+          resolve();
+        }
+      });
+    });
+
+    return this.syncPromise;
+  }
+
+  async syncSheet(sheetName: string): Promise<void> {
+    const apiUrl = environment.googleSheetsApiUrl?.trim();
+    if (!apiUrl) return;
+
+    this.isLoadingData.set(true);
+    const separator = apiUrl.includes('?') ? '&' : '?';
+    const targetUrl = `${apiUrl}${separator}sheet=${encodeURIComponent(sheetName)}`;
+
+    return new Promise<void>((resolve) => {
+      this.http.get<any>(targetUrl).subscribe({
+        next: (res) => {
+          const list = res?.data || res;
+          if (Array.isArray(list) && list.length > 0) {
+            switch (sheetName.toLowerCase()) {
+              case 'eventos':
+                this.events.set(list);
+                break;
+              case 'predicas':
+                this.sermons.set(list);
+                break;
+              case 'devocional':
+                if (list[0]) this.currentDevotional.set(list[0]);
+                break;
+              case 'canciones':
+                this.choirSongs.set(list);
+                break;
+              case 'servicios':
+                this.ministries.set(list);
+                break;
+              case 'kids_historias':
+                this.kidsStories.set(list);
+                break;
+              case 'kids_versiculos':
+                this.memoryVerses.set(list);
+                break;
+              case 'kids_trivia':
+                this.kidsTrivia.set(list);
+                break;
+            }
+          }
+          this.isLoadingData.set(false);
+          resolve();
+        },
+        error: () => {
+          this.isLoadingData.set(false);
+          resolve();
+        }
+      });
+    });
+  }
+
+  private normalizeEvent(e: ChurchEvent): ChurchEvent {
+    return {
+      ...e,
+      date: this.cleanDateString(e.date),
+      time: this.cleanTimeString(e.time),
+    };
+  }
+
+  private normalizeSermon(s: Sermon): Sermon {
+    return {
+      ...s,
+      date: this.cleanDateString(s.date),
+    };
+  }
+
+  private cleanDateString(val: any): string {
+    if (!val) return '';
+    const str = String(val).trim();
+    if (str.includes('T') && !isNaN(Date.parse(str))) {
+      const d = new Date(str);
+      const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+      return `${d.getUTCDate()} ${months[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
+    }
+    return str;
+  }
+
+  private cleanTimeString(val: any): string {
+    if (!val) return '';
+    const str = String(val).trim();
+    if (str.startsWith('1899-') || (str.includes('T') && !isNaN(Date.parse(str)))) {
+      const d = new Date(str);
+      let hours = d.getHours();
+      const minutes = d.getMinutes().toString().padStart(2, '0');
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12;
+      hours = hours ? hours : 12;
+      return `${hours.toString().padStart(2, '0')}:${minutes} ${ampm}`;
+    }
+    return str;
   }
 }

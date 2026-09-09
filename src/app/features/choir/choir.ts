@@ -3,6 +3,7 @@ import {
   Component,
   computed,
   inject,
+  OnInit,
   signal,
 } from '@angular/core';
 import { ChurchDataService } from '../../core/services/church-data.service';
@@ -20,10 +21,11 @@ import { UpperCasePipe } from '@angular/common';
   styleUrl: './choir.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChoirComponent {
+export class ChoirComponent implements OnInit {
   private readonly churchService = inject(ChurchDataService);
   private readonly messageService = inject(MessageService);
 
+  readonly isLoading = this.churchService.isLoadingData;
   readonly songs = this.churchService.choirSongs;
   readonly selectedCategory = signal<'todas' | 'adoracion' | 'alabanza' | 'especial'>('todas');
   readonly activeSong = signal<ChoirSong | null>(this.songs()[0]);
@@ -40,6 +42,10 @@ export class ChoirComponent {
     if (cat === 'todas') return this.songs();
     return this.songs().filter((s) => s.category === cat);
   });
+
+  ngOnInit(): void {
+    this.churchService.syncAllFromGoogleSheets();
+  }
 
   setCategory(cat: 'todas' | 'adoracion' | 'alabanza' | 'especial'): void {
     this.selectedCategory.set(cat);

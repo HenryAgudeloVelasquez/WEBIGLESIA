@@ -6,7 +6,22 @@
 .category-filters-container {
   margin-bottom: 3rem;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+
+  .sync-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.9rem;
+    border-radius: var(--radius-full);
+    background: rgba(212, 175, 55, 0.12);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    color: var(--color-primary-light);
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
 
   .filter-pills {
     display: flex;

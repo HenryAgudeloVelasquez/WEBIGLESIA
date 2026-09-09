@@ -3,6 +3,7 @@ import {
   Component,
   computed,
   inject,
+  OnInit,
   signal,
 } from '@angular/core';
 import { ChurchDataService } from '../../core/services/church-data.service';
@@ -20,14 +21,23 @@ import { environment } from '../../../environments/environment';
   styleUrl: './events.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EventsComponent {
+export class EventsComponent implements OnInit {
   private readonly churchService = inject(ChurchDataService);
   private readonly messageService = inject(MessageService);
 
   readonly allEvents = this.churchService.events;
+  readonly isLoading = this.churchService.isLoadingData;
   readonly selectedCategory = signal<EventCategory | 'todos'>('todos');
   readonly activeEventModal = signal<ChurchEvent | null>(null);
   readonly env = environment;
+
+  ngOnInit(): void {
+    this.churchService.syncAllFromGoogleSheets();
+  }
+
+  refreshEvents(): void {
+    this.churchService.syncSheet('Eventos');
+  }
 
   readonly categories: { label: string; value: EventCategory | 'todos'; icon: string }[] = [
     { label: 'Todos los Eventos', value: 'todos', icon: 'pi pi-th-large' },
