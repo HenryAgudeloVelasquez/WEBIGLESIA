@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChurchConfigService } from '../../core/services/church-config.service';
 import { environment } from '../../../environments/environment';
 
 interface QuickOption {
@@ -15,8 +16,10 @@ interface QuickOption {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WhatsappButtonComponent {
+  private readonly configService = inject(ChurchConfigService);
+
   readonly isCardOpen = signal<boolean>(false);
-  readonly phoneNumber = environment.whatsappNumber;
+  readonly currentWa = this.configService.currentWhatsApp;
 
   readonly quickOptions: QuickOption[] = [
     {
@@ -50,6 +53,7 @@ export class WhatsappButtonComponent {
   }
 
   getWhatsAppLink(customMessage: string): string {
-    return `https://wa.me/${this.phoneNumber}?text=${encodeURIComponent(customMessage)}`;
+    const phone = this.currentWa().phone || environment.whatsappNumber;
+    return `https://wa.me/${phone}?text=${encodeURIComponent(customMessage)}`;
   }
 }

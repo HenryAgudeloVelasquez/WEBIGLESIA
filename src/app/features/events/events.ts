@@ -7,6 +7,7 @@ import {
   signal,
 } from '@angular/core';
 import { ChurchDataService } from '../../core/services/church-data.service';
+import { ChurchConfigService } from '../../core/services/church-config.service';
 import { ChurchEvent, EventCategory } from '../../core/models/church.model';
 import { MessageService } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
@@ -23,6 +24,7 @@ import { environment } from '../../../environments/environment';
 })
 export class EventsComponent implements OnInit {
   private readonly churchService = inject(ChurchDataService);
+  private readonly configService = inject(ChurchConfigService);
   private readonly messageService = inject(MessageService);
 
   readonly allEvents = this.churchService.events;
@@ -77,7 +79,8 @@ export class EventsComponent implements OnInit {
   }
 
   getWhatsAppRegistrationUrl(event: ChurchEvent): string {
+    const phone = this.configService.whatsAppConfigs()['eventos']?.phone || this.env.whatsappNumber;
     const msg = `¡Hola! Deseo registrarme y recibir más información sobre el evento: *${event.title}* del ${event.date}.`;
-    return `https://wa.me/${this.env.whatsappNumber}?text=${encodeURIComponent(msg)}`;
+    return `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
   }
 }

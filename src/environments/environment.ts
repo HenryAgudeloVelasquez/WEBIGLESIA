@@ -13,6 +13,9 @@ export const environment = {
     youtube: 'https://youtube.com/@ensugracia',
     spotify: 'https://spotify.com'
   },
-  // URL de la Web App de Google Apps Script para sincronizar con Google Sheets
-  googleSheetsApiUrl: 'https://script.google.com/macros/s/AKfycbx3lKvsiQbzKyKQLTzpHxmOUpBCcPJtxpnnen_XrMER4TYL8YoTaluprjk_00XVxIMt/exec'
+  // URL de la Web App de Google Apps Script para sincronizar con Google Sheets (Contenidos)
+  googleSheetsApiUrl: 'https://script.google.com/macros/s/AKfycbx3lKvsiQbzKyKQLTzpHxmOUpBCcPJtxpnnen_XrMER4TYL8YoTaluprjk_00XVxIMt/exec',
+  // URL de la Web App de Google Apps Script 2 (SEO, WhatsApp por página, Horarios y Contacto)
+  googleSheetsConfigUrl: 'https://script.google.com/macros/s/AKfycby3Wy8WE17gLwFkbKSvpmCeZV7NdeB3ofXYm2-0LBP3_wavR4yDJZN3yW76dwPdVgSN/exec'
 };
+

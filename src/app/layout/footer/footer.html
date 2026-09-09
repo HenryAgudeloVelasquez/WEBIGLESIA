@@ -34,9 +34,10 @@
           <a [href]="env.social.youtube" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="social-btn">
             <i class="pi pi-youtube"></i>
           </a>
-          <a [href]="'https://wa.me/' + env.whatsappNumber" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="social-btn wa-accent">
+          <a [href]="'https://wa.me/' + currentWhatsApp().phone" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="social-btn wa-accent">
             <i class="pi pi-whatsapp"></i>
           </a>
+
         </div>
       </div>
 
@@ -44,27 +45,15 @@
       <div class="footer-col">
         <h4 class="col-title">Horarios de Bendición</h4>
         <ul class="schedule-list">
-          <li class="schedule-item">
-            <div class="day-badge">Domingos</div>
-            <div class="schedule-details">
-              <strong>Culto de Celebración Familiar</strong>
-              <span>10:00 AM - 12:30 PM (Con Escuela Kids)</span>
-            </div>
-          </li>
-          <li class="schedule-item">
-            <div class="day-badge">Miércoles</div>
-            <div class="schedule-details">
-              <strong>Noche de Gracia & Discipulado</strong>
-              <span>07:00 PM - 08:30 PM</span>
-            </div>
-          </li>
-          <li class="schedule-item">
-            <div class="day-badge">Sábados</div>
-            <div class="schedule-details">
-              <strong>Jóvenes & Ensayos de Alabanza</strong>
-              <span>04:00 PM - 06:30 PM</span>
-            </div>
-          </li>
+          @for (item of schedules(); track item.day + item.title) {
+            <li class="schedule-item">
+              <div class="day-badge">{{ item.day }}</div>
+              <div class="schedule-details">
+                <strong>{{ item.title }}</strong>
+                <span>{{ item.time }} {{ item.subtitle ? '(' + item.subtitle + ')' : '' }}</span>
+              </div>
+            </li>
+          }
         </ul>
       </div>
 
@@ -87,19 +76,19 @@
         <div class="contact-info">
           <div class="info-row">
             <i class="pi pi-map-marker info-icon"></i>
-            <span>{{ env.address }}</span>
+            <span>{{ contact().address }}</span>
           </div>
           <div class="info-row">
             <i class="pi pi-phone info-icon"></i>
-            <span>{{ env.phone }}</span>
+            <span>{{ contact().phone }}</span>
           </div>
           <div class="info-row">
             <i class="pi pi-envelope info-icon"></i>
-            <span>{{ env.email }}</span>
+            <span>{{ contact().email }}</span>
           </div>
           <div class="info-row">
             <i class="pi pi-whatsapp info-icon text-green"></i>
-            <span>Línea de Oración Inmediata: Activa 24/7</span>
+            <span>{{ contact().prayerLine }}</span>
           </div>
         </div>
       </div>

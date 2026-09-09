@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { ChurchDataService } from '../../core/services/church-data.service';
+import { ChurchConfigService } from '../../core/services/church-config.service';
 import { MinistryService } from '../../core/models/church.model';
 import { environment } from '../../../environments/environment';
 
@@ -12,6 +13,8 @@ import { environment } from '../../../environments/environment';
 })
 export class ServicesComponent implements OnInit {
   private readonly churchService = inject(ChurchDataService);
+  private readonly configService = inject(ChurchConfigService);
+
   readonly isLoading = this.churchService.isLoadingData;
   readonly ministries = this.churchService.ministries;
   readonly env = environment;
@@ -31,7 +34,8 @@ export class ServicesComponent implements OnInit {
   }
 
   getWhatsAppScheduleUrl(m: MinistryService): string {
+    const phone = this.configService.whatsAppConfigs()['servicios']?.phone || this.env.whatsappNumber;
     const msg = `¡Hola! Me comunico desde la web para recibir información o agendar: *${m.title}* (${m.subtitle}).`;
-    return `https://wa.me/${this.env.whatsappNumber}?text=${encodeURIComponent(msg)}`;
+    return `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
   }
 }

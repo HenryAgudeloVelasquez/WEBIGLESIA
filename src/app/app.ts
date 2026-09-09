@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './layout/header/header';
 import { FooterComponent } from './layout/footer/footer';
@@ -6,6 +6,7 @@ import { WhatsappButtonComponent } from './layout/whatsapp-button/whatsapp-butto
 import { Toast } from 'primeng/toast';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { MessageService, ConfirmationService } from 'primeng/api';
+import { ChurchConfigService } from './core/services/church-config.service';
 
 @Component({
   selector: 'app-root',
@@ -23,4 +24,10 @@ import { MessageService, ConfirmationService } from 'primeng/api';
   providers: [MessageService, ConfirmationService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class App {}
+export class App implements OnInit {
+  private readonly configService = inject(ChurchConfigService);
+
+  ngOnInit(): void {
+    this.configService.syncConfigFromGoogleSheets();
+  }
+}

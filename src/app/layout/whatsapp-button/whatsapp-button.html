@@ -9,7 +9,7 @@
             <i class="pi pi-whatsapp"></i>
           </div>
           <div>
-            <h4 class="popup-title">Línea de Gracia & Oración</h4>
+            <h4 class="popup-title">{{ currentWa().label }}</h4>
             <p class="popup-status">
               <span class="status-dot"></span>
               En línea para atenderte con amor
@@ -46,7 +46,7 @@
       <!-- Card Footer -->
       <div class="popup-footer">
         <a
-          [href]="getWhatsAppLink('¡Hola! Me comunico desde la web de la Iglesia En su Gracia.')"
+          [href]="getWhatsAppLink(currentWa().defaultMessage)"
           target="_blank"
           rel="noopener noreferrer"
           class="custom-chat-btn"

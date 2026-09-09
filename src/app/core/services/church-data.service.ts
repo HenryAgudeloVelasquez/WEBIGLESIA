@@ -1,5 +1,6 @@
-import { Injectable, computed, inject, signal } from '@angular/core';
+import { Injectable, computed, inject, signal, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { isPlatformBrowser } from '@angular/common';
 import { environment } from '../../../environments/environment';
 import {
   ChurchEvent,
@@ -17,12 +18,14 @@ import {
 })
 export class ChurchDataService {
   private readonly http = inject(HttpClient);
+  private readonly platformId = inject(PLATFORM_ID);
 
   // Estados de sincronización con Google Sheets
   readonly isLoadingData = signal<boolean>(false);
   readonly lastSyncDate = signal<Date | null>(null);
   readonly syncError = signal<string | null>(null);
   private syncPromise: Promise<void> | null = null;
+
   // ==========================================
   // Versículo Central / Lema
   // ==========================================
@@ -396,10 +399,11 @@ Hoy celebramos Tu fidelidad!
   // ==========================================
   async syncAllFromGoogleSheets(force: boolean = false): Promise<void> {
     const apiUrl = environment.googleSheetsApiUrl?.trim();
-    if (!apiUrl) {
-      // Sin URL configurada: se mantienen intactos los datos locales de respaldo
+    if (!apiUrl || !isPlatformBrowser(this.platformId)) {
+      // Sin URL configurada o en SSR: se mantienen intactos los datos locales de respaldo
       return;
     }
+
 
     if (this.syncPromise && !force) {
       return this.syncPromise;
@@ -471,7 +475,8 @@ Hoy celebramos Tu fidelidad!
 
   async syncSheet(sheetName: string): Promise<void> {
     const apiUrl = environment.googleSheetsApiUrl?.trim();
-    if (!apiUrl) return;
+    if (!apiUrl || !isPlatformBrowser(this.platformId)) return;
+
 
     this.isLoadingData.set(true);
     const separator = apiUrl.includes('?') ? '&' : '?';

@@ -222,3 +222,61 @@ El servicio [src/app/core/services/church-data.service.ts](file:///c:/Users/ASUS
 1. **Evitar filas vacías intermedias**: Mantén las filas de cada pestaña consecutivas.
 2. **Actualizaciones inmediatas**: Al modificar una celda en Google Sheets, los cambios están disponibles al instante sin necesidad de recompilar la web en Angular.
 3. **Respaldo periódico**: Puedes descargar una copia de seguridad en Excel (`.xlsx`) desde **Archivo** $\rightarrow$ **Descargar**.
+
+---
+
+## 6. Hoja 2: Configuración del Portal, SEO, WhatsApp y Horarios (Independiente)
+
+Para separar los contenidos ministeriales de los parámetros operacionales y de posicionamiento web, se implementó un segundo archivo independiente de Google Sheets: **"Portal Web - Configuración & SEO"**.
+
+### 6.1. Estructura de las 4 Pestañas
+
+#### 📄 Pestaña 1: `SEO_Paginas`
+Controla títulos, metaetiquetas descriptivas, Open Graph (redes sociales), Twitter cards y canonicals:
+| Columna | Tipo | Descripción | Ejemplo |
+| :--- | :--- | :--- | :--- |
+| `route` | Texto | Ruta Angular exacta (`/`, `/eventos`, `/coro`, `/evangelio`, `/kids`, `/servicios`) | `/` |
+| `title` | Texto | Título para la pestaña del navegador y motores | `Ministerio En su Gracia \| Restauración Familiar` |
+| `description` | Texto | Meta description (150-160 caracteres) | `Comunidad cristiana comprometida con la restauración de matrimonios y familias...` |
+| `keywords` | Texto | Palabras clave separadas por comas | `iglesia cristiana, gracia, medellin, matrimonios, predicaciones` |
+| `ogTitle` | Texto | Título para compartir en redes (Facebook, WhatsApp, LinkedIn) | `Ministerio En su Gracia - Una Casa de Bendición Familiar` |
+| `ogDescription` | Texto | Descripción para redes sociales | `Descubre la gracia incondicional de Dios para tu hogar.` |
+| `ogImage` | Texto | URL de imagen al compartir (Drive directa o web) | `https://drive.google.com/uc?export=view&id=...` |
+| `ogType` | Texto | Tipo Open Graph (`website`, `article`) | `website` |
+| `twitterCard` | Texto | Formato de tarjeta Twitter (`summary_large_image`, `summary`) | `summary_large_image` |
+
+#### 📄 Pestaña 2: `WhatsApp_Por_Pagina`
+Define qué línea y mensaje predeterminado atiende en cada sección del portal:
+| Columna | Tipo | Descripción | Ejemplo |
+| :--- | :--- | :--- | :--- |
+| `route` | Texto | Ruta (`/`, `/eventos`, `/coro`, `/evangelio`, `/kids`, `/servicios`) | `/servicios` |
+| `phone` | Texto | Teléfono internacional sin signos ni espacios | `573135246723` |
+| `label` | Texto | Nombre visible de la línea o ministerio | `Consejería Pastoral Familiar` |
+| `defaultMessage`| Texto | Texto sugerido al abrir WhatsApp | `Hola Pastor, me gustaría agendar una cita de consejería familiar.` |
+| `isActive` | Booleano | Si la línea está en servicio | `TRUE` |
+
+#### 📄 Pestaña 3: `Contacto_Pastoral`
+Datos para pie de página y módulos de contacto:
+| Columna | Tipo | Descripción | Ejemplo |
+| :--- | :--- | :--- | :--- |
+| `key` | Texto | Clave única | `pastoralPhone`, `email`, `address`, `city` |
+| `value` | Texto | Valor asignado | `573135246723`, `contacto@ensugracia.org`, `Calle 123 #45-67`, `Medellín` |
+| `label` | Texto | Etiqueta legible | `Línea Pastoral Directa`, `Correo Oficial` |
+
+#### 📄 Pestaña 4: `Horarios_Bendicion`
+Horarios dinámicos de las reuniones reflejados en el footer:
+| Columna | Tipo | Descripción | Ejemplo |
+| :--- | :--- | :--- | :--- |
+| `day` | Texto | Día de la reunión | `Domingo`, `Miércoles`, `Sábado` |
+| `time` | Texto | Hora de inicio | `10:00 AM`, `07:00 PM`, `04:00 PM` |
+| `name` | Texto | Nombre del servicio o culto | `Culto Principal de Restauración`, `Noche de Intercesión` |
+| `description` | Texto | Descripción breve | `Alabanza, ministración de familias y Gracia Kids.` |
+| `order` | Número | Orden visual en el pie de página | `1`, `2`, `3` |
+
+### 6.2. Script del Segundo Archivo: `google-apps-script-config.js`
+El código fuente se encuentra en [google-apps-script-config.js](file:///c:/Users/ASUS/Documents/PROYECTOS/ANGULAR/IGLESIA/WEBIGLESIA/google-apps-script-config.js).
+Al implementarlo en Apps Script como **Aplicación Web** ("Cualquier persona"):
+1. Copia la URL generada (`https://script.google.com/macros/s/.../exec`).
+2. Configúrala en [src/environments/environment.ts](file:///c:/Users/ASUS/Documents/PROYECTOS/ANGULAR/IGLESIA/WEBIGLESIA/src/environments/environment.ts) y [src/environments/environment.production.ts](file:///c:/Users/ASUS/Documents/PROYECTOS/ANGULAR/IGLESIA/WEBIGLESIA/src/environments/environment.production.ts) bajo `googleSheetsConfigUrl`.
+3. El servicio [src/app/core/services/church-config.service.ts](file:///c:/Users/ASUS/Documents/PROYECTOS/ANGULAR/IGLESIA/WEBIGLESIA/src/app/core/services/church-config.service.ts) se encarga de aplicar los metadatos de búsqueda dinámicamente en cada navegación y actualizar el footer y los botones de WhatsApp automáticamente.
+
