@@ -1,15 +1,24 @@
-.church-header {
-  position: sticky;
+:host {
+  display: block;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
   z-index: 1000;
-  background: rgba(10, 25, 47, 0.88);
+}
+
+.church-header {
+  position: relative;
+  width: 100%;
+  background: rgba(10, 25, 47, 0.92);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(212, 175, 55, 0.2);
   transition: all var(--transition-base);
 
   html:not(.app-dark) & {
-    background: rgba(255, 255, 255, 0.92);
+    background: rgba(255, 255, 255, 0.95);
     border-bottom: 1px solid rgba(212, 175, 55, 0.25);
   }
 }
@@ -283,8 +292,9 @@
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
   padding: 1.25rem 1.5rem 1.75rem;
   animation: slide-down 0.25s ease-out;
-  max-height: calc(100vh - 65px);
+  max-height: calc(100vh - var(--header-height));
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   z-index: 1001;
 
   @media (min-width: 993px) {

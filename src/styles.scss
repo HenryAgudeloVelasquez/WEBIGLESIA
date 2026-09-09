@@ -6,6 +6,9 @@
 // Identidad: Royal Navy (#0A192F), Imperial Gold (#D4AF37), Warm Burgundy (#8B1E2D)
 // ==============================================================================
 :root {
+  // Dimensiones del Layout
+  --header-height: 76px;
+
   // Paleta Institucional
   --color-primary: #D4AF37;        // Oro imperial cálido (Altar & Gloria)
   --color-primary-dark: #AA7C11;   // Oro profundo
@@ -71,6 +74,12 @@
   --transition-slow: 400ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+@media (max-width: 768px) {
+  :root {
+    --header-height: 60px;
+  }
+}
+
 // ==============================================================================
 // Light Mode (Inversión elegante con tonos marfil y azul imperial)
 // ==============================================================================
@@ -103,6 +112,7 @@ html:not(.app-dark) {
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: var(--header-height);
   -webkit-text-size-adjust: 100%;
   width: 100%;
   overflow-x: hidden;
